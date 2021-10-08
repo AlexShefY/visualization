@@ -8,16 +8,23 @@ import org.jetbrains.skiko.SkiaWindow
 import java.awt.Dimension
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.File.createTempFile
+import java.io.IOException
+import java.nio.channels.ByteChannel
+import java.nio.ByteBuffer
+import java.nio.file.Files.*
+import java.nio.file.Path
+import kotlin.io.path.*
+import java.nio.file.StandardOpenOption
 import javax.swing.WindowConstants
+import java.nio.file.Files.newByteChannel as newByteChannel
 
 
 var data : ArrayList<classData> = arrayListOf()
 var fields : List<String> = listOf()
 var n = 0
 var m = 0
+var fileName = ""
 var type : typesOfInput? = null
 /*
  * Обработка ввода
@@ -50,9 +57,8 @@ fun main() {
             data.add(classData(product, vec.toMutableList()))
         }
     }
-    var fileName: String = readLine()!!
+    fileName = readLine()!!
     createWindow("pf-2021-viz")
-    
 }
 
 fun createWindow(title: String) = runBlocking(Dispatchers.Swing) {
@@ -108,6 +114,8 @@ fun max(a : Float, b : Float) : Float{
 }
 class Renderer(val layer: SkiaLayer): SkiaRenderer {
     val typeface = Typeface.makeFromFile("fonts/JetBrainsMono-Regular.ttf")
+    var surface: Surface = Surface.makeRasterN32Premul(500, 500)
+    var canvas1: Canvas = surface.getCanvas()
     val font = Font(typeface, 20f)
     val font1 = Font(typeface, 10f)
     val paint = Paint().apply {
@@ -137,28 +145,53 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         for(j in 0 until fields.size){
             canvas.drawRect(Rect.makeXYWH(30f, 30f + 20 * j * 1f,  10f, 10f), arrayListPaints[j])
             canvas.drawString(fields[j], 40f, 40f + 20 * j * 1f, font, paint)
+            canvas1.drawRect(Rect.makeXYWH(30f, 30f + 20 * j * 1f,  10f, 10f), arrayListPaints[j])
+            canvas1.drawString(fields[j], 40f, 40f + 20 * j * 1f, font, paint)
         }
         var y0 = fields.size * 20f + 140
         var x0 = 140f
         canvas.drawRect(Rect.makeXYWH(x0 - 80f, y0 - 80f, allsize + 120f, 420f), Paint().apply { color = 0xffd3dbe4.toInt()})
         canvas.drawLine(x0 , y0 - 20f, x0, y0 + 300f, paint)
         canvas.drawLine(x0, y0 + 300f, x0 + allsize + 20f, y0 + 300f, paint)
+        canvas1.drawRect(Rect.makeXYWH(x0 - 80f, y0 - 80f, allsize + 120f, 420f), Paint().apply { color = 0xffd3dbe4.toInt()})
+        canvas1.drawLine(x0 , y0 - 20f, x0, y0 + 300f, paint)
+        canvas1.drawLine(x0, y0 + 300f, x0 + allsize + 20f, y0 + 300f, paint)
         for(j in 1..10){
             canvas.drawLine(x0, y0 + 300f - 20f * j, x0 - 5f, y0 + 300f - 20f * j, paint)
             canvas.drawString("${propotion * j}", x0 - 20f - 5f * "${propotion * j}".length, y0 + 300f -20f * j, font1, paint)
+            canvas1.drawLine(x0, y0 + 300f - 20f * j, x0 - 5f, y0 + 300f - 20f * j, paint)
+            canvas1.drawString("${propotion * j}", x0 - 20f - 5f * "${propotion * j}".length, y0 + 300f -20f * j, font1, paint)
         }
         for(i in 0 until n){
             var j = 0
             canvas.drawString(data[i].key, x0, 320f + y0, font1, paint)
+            canvas1.drawString(data[i].key, x0, 320f + y0, font1, paint)
             for(value in data[i].values){
                 var dy = value.toFloat() / propotion
                 dy *= 20f
                 canvas.drawLine(x0, 300f + y0, x0 + 20f, 300f + y0, arrayListPaints[j])
                 canvas.drawRect(Rect.makeXYWH(x0, 300f + y0 - dy, 20f, dy), arrayListPaints[j])
+                canvas1.drawLine(x0, 300f + y0, x0 + 20f, 300f + y0, arrayListPaints[j])
+                canvas1.drawRect(Rect.makeXYWH(x0, 300f + y0 - dy, 20f, dy), arrayListPaints[j])
                 x0 += 20f
                 j += 1
             }
             x0 += max(20f, data[i].key.length * 6.5f - data[i].values.size * 20f)
+        }
+        val image = surface.makeImageSnapshot()
+        val pngData = image.encodeToData(EncodedImageFormat.PNG)
+        val pngBytes = pngData!!.toByteBuffer()
+
+        try {
+            val path: Path = Path(fileName)
+            val channel: ByteChannel = newByteChannel(
+                path,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE
+            )
+            channel.write(pngBytes)
+            channel.close()
+        } catch (e: IOException) {
+            println(e)
         }
     }
 
