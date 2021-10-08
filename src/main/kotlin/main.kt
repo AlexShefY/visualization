@@ -114,7 +114,7 @@ fun max(a : Float, b : Float) : Float{
 }
 class Renderer(val layer: SkiaLayer): SkiaRenderer {
     val typeface = Typeface.makeFromFile("fonts/JetBrainsMono-Regular.ttf")
-    var surface: Surface = Surface.makeRasterN32Premul(500, 500)
+    var surface: Surface = Surface.makeRasterN32Premul(1000, 1000)
     var canvas1: Canvas = surface.getCanvas()
     val font = Font(typeface, 20f)
     val font1 = Font(typeface, 10f)
@@ -124,9 +124,10 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         strokeWidth = 1f
     }
     /*
-     * Отдельная функция для первого типа
-    */
-    fun printDiagramType1(canvas : Canvas, width: Int, height: Int, nanoTime: Long){
+     * Формирование инструкций вывода по входным данным
+     */
+    fun getInstructionsType1() : MutableList<Array<Any> >{
+        var instructions : MutableList <Array <Any> > = mutableListOf()
         var propotion = 0
         var allsize = 0f
         for(i in 0 until n){
@@ -143,45 +144,84 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         }
         propotion = normal(propotion)
         for(j in 0 until fields.size){
-            canvas.drawRect(Rect.makeXYWH(30f, 30f + 20 * j * 1f,  10f, 10f), arrayListPaints[j])
-            canvas.drawString(fields[j], 40f, 40f + 20 * j * 1f, font, paint)
-            canvas1.drawRect(Rect.makeXYWH(30f, 30f + 20 * j * 1f,  10f, 10f), arrayListPaints[j])
-            canvas1.drawString(fields[j], 40f, 40f + 20 * j * 1f, font, paint)
+            instructions.add(arrayOf("Rect", 30f, 30f + 20 * j * 1f,  10f, 10f, arrayListPaints[j].color.toInt()))
+            instructions.add(arrayOf("String", fields[j], 40f, 40f + 20 * j * 1f))
         }
         var y0 = fields.size * 20f + 140
         var x0 = 140f
-        canvas.drawRect(Rect.makeXYWH(x0 - 80f, y0 - 80f, allsize + 120f, 420f), Paint().apply { color = 0xffd3dbe4.toInt()})
-        canvas.drawLine(x0 , y0 - 20f, x0, y0 + 300f, paint)
-        canvas.drawLine(x0, y0 + 300f, x0 + allsize + 20f, y0 + 300f, paint)
-        canvas1.drawRect(Rect.makeXYWH(x0 - 80f, y0 - 80f, allsize + 120f, 420f), Paint().apply { color = 0xffd3dbe4.toInt()})
-        canvas1.drawLine(x0 , y0 - 20f, x0, y0 + 300f, paint)
-        canvas1.drawLine(x0, y0 + 300f, x0 + allsize + 20f, y0 + 300f, paint)
+        instructions.add(arrayOf("Rect", x0 - 80f, y0 - 80f, allsize + 120f, 420f, 0xffd3dbe4.toInt()))
+        instructions.add(arrayOf("Line", x0 , y0 - 20f, x0, y0 + 300f, paint.color.toInt()))
+        instructions.add(arrayOf("Line", x0, y0 + 300f, x0 + allsize + 20f, y0 + 300f, paint.color.toInt()))
         for(j in 1..10){
-            canvas.drawLine(x0, y0 + 300f - 20f * j, x0 - 5f, y0 + 300f - 20f * j, paint)
-            canvas.drawString("${propotion * j}", x0 - 20f - 5f * "${propotion * j}".length, y0 + 300f -20f * j, font1, paint)
-            canvas1.drawLine(x0, y0 + 300f - 20f * j, x0 - 5f, y0 + 300f - 20f * j, paint)
-            canvas1.drawString("${propotion * j}", x0 - 20f - 5f * "${propotion * j}".length, y0 + 300f -20f * j, font1, paint)
+            instructions.add(arrayOf("Line", x0, y0 + 300f - 20f * j, x0 - 5f, y0 + 300f - 20f * j, paint.color.toInt()))
+            instructions.add(arrayOf("String", "${propotion * j}", x0 - 20f - 5f * "${propotion * j}".length, y0 + 300f -20f * j))
         }
         for(i in 0 until n){
             var j = 0
-            canvas.drawString(data[i].key, x0, 320f + y0, font1, paint)
-            canvas1.drawString(data[i].key, x0, 320f + y0, font1, paint)
+            instructions.add(arrayOf("String", data[i].key, x0, 320f + y0))
             for(value in data[i].values){
                 var dy = value.toFloat() / propotion
                 dy *= 20f
-                canvas.drawLine(x0, 300f + y0, x0 + 20f, 300f + y0, arrayListPaints[j])
-                canvas.drawRect(Rect.makeXYWH(x0, 300f + y0 - dy, 20f, dy), arrayListPaints[j])
-                canvas1.drawLine(x0, 300f + y0, x0 + 20f, 300f + y0, arrayListPaints[j])
-                canvas1.drawRect(Rect.makeXYWH(x0, 300f + y0 - dy, 20f, dy), arrayListPaints[j])
+                instructions.add(arrayOf("Line", x0, 300f + y0, x0 + 20f, 300f + y0, arrayListPaints[j].color))
+                instructions.add(arrayOf("Rect", x0, 300f + y0 - dy, 20f, dy, arrayListPaints[j].color))
                 x0 += 20f
                 j += 1
             }
             x0 += max(20f, data[i].key.length * 6.5f - data[i].values.size * 20f)
         }
+        return instructions
+    }
+    /*
+     * Вывод в окно согласно инструкциям
+     */
+    fun outWindow(instructions : MutableList<Array<Any>>, canvas : Canvas){
+        for(instruction in instructions){
+            when(instruction[0].toString()){
+                "Rect" -> {
+                    var x1 = instruction[1].toString().toFloatOrNull()
+                    var y1 = instruction[2].toString().toFloatOrNull()
+                    var x2 = instruction[3].toString().toFloatOrNull()
+                    var y2 = instruction[4].toString().toFloatOrNull()
+                    var color1 = instruction[5].toString().toIntOrNull()
+                    if(x1 == null || y1 == null || x2 == null || y2 == null || color1 == null){
+                        println("Error")
+                        return
+                    }
+                    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), Paint().apply{color = color1})
+                }
+                "String" -> {
+                    var str = instruction[1].toString()
+                    var x1 = instruction[2].toString().toFloatOrNull()
+                    var y1 = instruction[3].toString().toFloatOrNull()
+                    if(x1 == null || y1 == null){
+                       println("Error")
+                        return
+                    }
+                    canvas.drawString(str, x1, y1, font1, paint)
+                }
+                "Line" -> {
+                    var x1 = instruction[1].toString().toFloatOrNull()
+                    var y1 = instruction[2].toString().toFloatOrNull()
+                    var x2 = instruction[3].toString().toFloatOrNull()
+                    var y2 = instruction[4].toString().toFloatOrNull()
+                    var color1 = instruction[5].toString().toIntOrNull()
+                    if(x1 == null || y1 == null || x2 == null || y2 == null || color1 == null){
+                        println("Error")
+                        return
+                    }
+                    canvas.drawLine(x1, y1, x2, y2, Paint().apply{color = color1})
+                }
+            }
+        }
+    }
+    /*
+     * Вывод в файл
+     */
+    fun outFile(instrucions: MutableList<Array<Any>>, canvas: Canvas){
+        outWindow(instrucions, canvas)
         val image = surface.makeImageSnapshot()
         val pngData = image.encodeToData(EncodedImageFormat.PNG)
         val pngBytes = pngData!!.toByteBuffer()
-
         try {
             val path: Path = Path(fileName)
             val channel: ByteChannel = newByteChannel(
@@ -193,6 +233,14 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         } catch (e: IOException) {
             println(e)
         }
+    }
+    /*
+     * Отдельная функция для первого типа
+    */
+    fun printDiagramType1(canvas : Canvas, width: Int, height: Int, nanoTime: Long){
+        var instructions = getInstructionsType1()
+        outWindow(instructions, canvas)
+        outFile(instructions, canvas1)
     }
 
     override fun onRender(canvas: Canvas, width: Int, height: Int, nanoTime: Long) {
