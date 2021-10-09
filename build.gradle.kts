@@ -44,6 +44,15 @@ dependencies {
 }
 
 
+tasks.withType<Jar> { duplicatesStrategy = DuplicatesStrategy.WARN }
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+}
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }

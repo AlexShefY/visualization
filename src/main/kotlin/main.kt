@@ -27,6 +27,7 @@ fun main() {
     when(type){
         typesOfInput.CLUSTEREDHISTOHRAM -> prepareClusteredHistohram()
         typesOfInput.GRAPH -> prepareGraph()
+        typesOfInput.STACKEDHISTOHRAM -> prepareClusteredHistohram()
     }
     fileName = readLine()!!
     createWindow("pf-2021-viz")
@@ -142,6 +143,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         var instructions = when(type) {
             typesOfInput.CLUSTEREDHISTOHRAM -> getInstructionsType1(paint)
             typesOfInput.GRAPH -> getInstructionsTypeGraph(paint)
+            typesOfInput.STACKEDHISTOHRAM -> getInstructionsStackedHistohram(paint)
             else -> mutableListOf()
         }
         outWindow(instructions, canvas)

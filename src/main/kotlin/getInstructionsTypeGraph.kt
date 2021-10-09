@@ -10,8 +10,8 @@ fun getInstructionsTypeGraph(paint : Paint) : MutableList < Array<Any> > {
         maxx = max(maxx, dataGraph.xValues[i])
         maxy = max(maxy, dataGraph.yValues[i])
     }
-    var proportionx = (maxx / 10).toInt()
-    var proportiony = (maxy / 10).toInt()
+    var proportionx = ((maxx + 9) / 10).toInt()
+    var proportiony = ((maxy + 9) / 10).toInt()
     if(proportionx == 0){
         proportionx = 1
     }
@@ -22,7 +22,7 @@ fun getInstructionsTypeGraph(paint : Paint) : MutableList < Array<Any> > {
     proportiony = normal(proportiony)
     var lastx = 0f
     var lasty = 0f
-    instructions.add(arrayOf("Rect", 100f, 60f, 440f, 440f, 0xffd3dbe4.toInt()))
+    instructions.add(arrayOf("Rect", 0f, 0f, 1000f, 1000f, greyColor))
     for(i in 0 until dataGraph.n){
         if(i != 0){
             instructions.add(arrayOf("Line", 100f + (dataGraph.xValues[i]) * 1f / proportionx * 40f, 500f - dataGraph.yValues[i] * 1f / proportiony * 40f, lastx, lasty, paint.color))

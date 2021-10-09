@@ -8,25 +8,25 @@ fun getInstructionsType1(paint : Paint) : MutableList<Array<Any> >{
     var propotion = 0
     var allsize = 0f
     for(i in 0 until n){
-        allsize += max(data[i].values.size * 20f + 20f, 6.5f * data[i].key.length)
+        allsize += max(data[i].values.size * 20f + 40f, 6.5f * data[i].key.length)
         for(value in data[i].values){
             if(value > propotion){
                 propotion = value
             }
         }
     }
-    propotion = propotion / 10
+    propotion /= 10
     if(propotion == 0){
         propotion++
     }
     propotion = normal(propotion)
-    for(j in 0 until fields.size){
+    for(j in fields.indices){
         instructions.add(arrayOf("Rect", 30f, 30f + 20 * j * 1f,  10f, 10f, arrayListPaints[j].color.toInt()))
         instructions.add(arrayOf("String", fields[j], 40f, 40f + 20 * j * 1f))
     }
     var y0 = fields.size * 20f + 140
     var x0 = 140f
-    instructions.add(arrayOf("Rect", x0 - 80f, y0 - 80f, allsize + 120f, 420f, 0xffd3dbe4.toInt()))
+    instructions.add(arrayOf("Rect", 0f, 0f, 1000f, 1000f, greyColor))
     instructions.add(arrayOf("Line", x0 , y0 - 20f, x0, y0 + 300f, paint.color.toInt()))
     instructions.add(arrayOf("Line", x0, y0 + 300f, x0 + allsize + 20f, y0 + 300f, paint.color.toInt()))
     for(j in 1..10){
@@ -44,7 +44,7 @@ fun getInstructionsType1(paint : Paint) : MutableList<Array<Any> >{
             x0 += 20f
             j += 1
         }
-        x0 += max(20f, data[i].key.length * 6.5f - data[i].values.size * 20f)
+        x0 += max(40f, data[i].key.length * 6.5f - data[i].values.size * 20f)
     }
     return instructions
 }
