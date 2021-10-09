@@ -3,6 +3,9 @@ import org.jetbrains.skija.Font
 import org.jetbrains.skija.Paint
 import org.jetbrains.skija.Rect
 
+fun pointOut(instruction: Array<Any>, canvas: Canvas, paint : Paint){
+    canvas.drawPoint(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), paint)
+}
 /*
  * Выводим линию по инструкции
  */
