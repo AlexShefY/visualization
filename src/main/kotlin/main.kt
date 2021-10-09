@@ -18,42 +18,15 @@ import javax.swing.WindowConstants
 import java.nio.file.Files.newByteChannel as newByteChannel
 
 
-var data : ArrayList<classData> = arrayListOf()
-var fields : List<String> = listOf()
-var n = 0
-var m = 0
-var fileName = ""
-var type : typesOfInput? = null
-/*
- * Обработка ввода
- */
-fun getTypeInput() : typesOfInput? {
-    return when(readLine()!!){
-        "clustered histogram" ->  typesOfInput.CLUSTEREDHISTOHRAM
-        "stacked histogram" ->  typesOfInput.STACKEDHISTOHRAM
-        "graph" ->  typesOfInput.GRAPH
-        "bar chart" -> typesOfInput.BARCHART
-        "pie chart" -> typesOfInput.PIECHART
-        else -> null
-    }
-}
 fun main() {
     type = getTypeInput()
-    if (type == typesOfInput.CLUSTEREDHISTOHRAM) {
-        n = readLine()!!.toInt()
-        m = readLine()!!.toInt()
-        fields = readLine()!!.split(' ')
-        for (i in 0 until n) {
-            var pair = readLine()!!.split(' ')
-            var product = pair[0]
-            var vec1 = pair.toMutableList()
-            vec1.removeFirst()
-            var vec = vec1.map { it.toInt() }
-            if (vec.size != m) {
-                return
-            }
-            data.add(classData(product, vec.toMutableList()))
-        }
+    if(type == null){
+        println("Error")
+        return
+    }
+    when(type){
+        typesOfInput.CLUSTEREDHISTOHRAM -> prepareClusteredHistohram()
+        typesOfInput.GRAPH -> prepareGraph()
     }
     fileName = readLine()!!
     createWindow("pf-2021-viz")
@@ -136,6 +109,9 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
                 "Line" -> {
                     lineOut(instruction, canvas)
                 }
+                "Point" -> {
+                    pointOut(instruction, canvas, paint)
+                }
             }
         }
     }
@@ -162,8 +138,12 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
     /*
      * Отдельная функция для первого типа
     */
-    fun printDiagramType1(canvas : Canvas, width: Int, height: Int, nanoTime: Long){
-        var instructions = getInstructionsType1(paint)
+    fun printDiagram(canvas : Canvas, width: Int, height: Int, nanoTime: Long){
+        var instructions = when(type) {
+            typesOfInput.CLUSTEREDHISTOHRAM -> getInstructionsType1(paint)
+            typesOfInput.GRAPH -> getInstructionsTypeGraph(paint)
+            else -> mutableListOf()
+        }
         outWindow(instructions, canvas)
         outFile(instructions, canvas1)
     }
@@ -173,9 +153,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         canvas.scale(contentScale, contentScale)
         val w = (width / contentScale).toInt()
         val h = (height / contentScale).toInt()
-        when(type) {
-            typesOfInput.CLUSTEREDHISTOHRAM -> printDiagramType1(canvas, width, height, nanoTime)
-        }
+        printDiagram(canvas, width, height, nanoTime)
         layer.needRedraw()
     }
 }
