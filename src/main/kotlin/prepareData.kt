@@ -5,6 +5,7 @@ var n = 0
 var m = 0
 var fileName = ""
 var type : typesOfInput? = null
+var data1 : classData1 = classData1()
 
 /*
  * Обработка ввода
@@ -55,5 +56,20 @@ fun prepareGraph() {
         }
         list.sortWith( compareBy({it.first}, {it.second}))
         dataGraph.xyValues.add(list)
+    }
+}
+
+fun preparePieChart(){
+    n = readLine()!!.toInt()
+    data1.n = n
+    for(i in 0 until n){
+        var str = readLine()!!.split(' ')
+        var name = str[0]
+        var value = str[1].toIntOrNull() // exception !!!!!!!!!
+        if(value == null){
+            return
+        }
+        data1.keys.add(name)
+        data1.values.add(value)
     }
 }

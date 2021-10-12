@@ -3,8 +3,14 @@ import org.jetbrains.skija.Font
 import org.jetbrains.skija.Paint
 import org.jetbrains.skija.Rect
 
+
 fun pointOut(instruction: Array<Any>, canvas: Canvas, paint : Paint){
     canvas.drawPoint(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), paint)
+}
+
+fun ArcOut(instruction : Array<Any>, canvas : Canvas, paint: Paint){
+    canvas.drawArc(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), instruction[3].toString().toFloat(), instruction[4].toString().toFloat(),
+        instruction[5].toString().toFloat(), instruction[6].toString().toFloat(), true, Paint().apply{color = instruction[7].toString().toInt()})
 }
 /*
  * Выводим линию по инструкции

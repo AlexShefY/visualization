@@ -28,6 +28,7 @@ fun main() {
         typesOfInput.CLUSTEREDHISTOHRAM -> prepareClusteredHistohram()
         typesOfInput.GRAPH -> prepareGraph()
         typesOfInput.STACKEDHISTOHRAM -> prepareClusteredHistohram()
+        typesOfInput.PIECHART -> preparePieChart()
     }
     fileName = readLine()!!
     createWindow("pf-2021-viz")
@@ -56,7 +57,15 @@ var arrayListPaints = arrayListOf(
     Paint().apply(){color = 0xff00FFFF.toInt()}, // Aqua
     Paint().apply(){color = 0xff00FA9A.toInt()}, // MediumSpringGreen
     Paint().apply(){color = 0xff8B008B.toInt()}, // DarkMagenta
-    Paint().apply(){color = 0xff6A5ACD.toInt()} //StateBlue
+    Paint().apply(){color = 0xff6A5ACD.toInt()}, //StateBlue
+    Paint().apply(){color = 0xAfDC143C.toInt()}, // Crimson
+    Paint().apply(){color = 0xAf2E8B57.toInt()}, // green
+    Paint().apply(){color = 0xAf2F4F4F.toInt()}, // green 1
+    Paint().apply(){color = 0xAfFF4500.toInt()}, // OrangeRed
+    Paint().apply(){color = 0xAf00FFFF.toInt()}, // Aqua
+    Paint().apply(){color = 0xAf00FA9A.toInt()}, // MediumSpringGreen
+    Paint().apply(){color = 0xAf8B008B.toInt()}, // DarkMagenta
+    Paint().apply(){color = 0xAf6A5ACD.toInt()} //StateBlue
 )
 /*
  * Подбираем наиболее красивое деление для гистограммы
@@ -115,6 +124,9 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
                 "Point" -> {
                     pointOut(instruction, canvas, paint)
                 }
+                "Arc" -> {
+                    ArcOut(instruction, canvas, paint)
+                }
             }
         }
     }
@@ -146,6 +158,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
             typesOfInput.CLUSTEREDHISTOHRAM -> getInstructionsType1(paint)
             typesOfInput.GRAPH -> getInstructionsTypeGraph(paint)
             typesOfInput.STACKEDHISTOHRAM -> getInstructionsStackedHistohram(paint)
+            typesOfInput.PIECHART -> getInstructionsPieChart(paint)
             else -> mutableListOf()
         }
         outWindow(instructions, canvas)
