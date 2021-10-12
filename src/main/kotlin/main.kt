@@ -50,9 +50,11 @@ fun createWindow(title: String) = runBlocking(Dispatchers.Swing) {
 
 var arrayListPaints = arrayListOf(
     Paint().apply(){color = 0xffDC143C.toInt()}, // Crimson
-    Paint().apply(){color = 0xff00FA9A.toInt()}, // MediumSpringGreen
+    Paint().apply(){color = 0xff2E8B57.toInt()}, // green
+    Paint().apply(){color = 0xff2F4F4F.toInt()}, // green 1
     Paint().apply(){color = 0xffFF4500.toInt()}, // OrangeRed
     Paint().apply(){color = 0xff00FFFF.toInt()}, // Aqua
+    Paint().apply(){color = 0xff00FA9A.toInt()}, // MediumSpringGreen
     Paint().apply(){color = 0xff8B008B.toInt()}, // DarkMagenta
     Paint().apply(){color = 0xff6A5ACD.toInt()} //StateBlue
 )

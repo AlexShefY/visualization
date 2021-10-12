@@ -42,16 +42,18 @@ fun prepareGraph() {
     fields = readLine()!!.split(' ')
     n = readLine()!!.toInt()
     dataGraph.n = n
-    var list = mutableListOf<Pair<Float, Float>>()
-    for (i in 0 until n) {
-        var pair = readLine()!!.split(' ')
-        var x = pair[0].toFloat() // FLOAT ?????
-        var y = pair[1].toFloat() // exception !!!!!!!!!!!!!!!!!!!!!!!!
-        list.add(Pair(x, y))
-    }
-    list.sortWith( compareBy({it.first}, {it.second}))
-    for(point in list){
-        dataGraph.xValues.add(point.first)
-        dataGraph.yValues.add(point.second)
+    for(i in 0 until n) {
+        m = readLine()!!.toInt() // exception !!!!!!!!!!!!!!!!!!!
+        var name = readLine()!!
+        dataGraph.names.add(name)
+        var list = mutableListOf<Pair<Float, Float>>()
+        for (i in 0 until m) {
+            var pair = readLine()!!.split(' ')
+            var x = pair[0].toFloat() // FLOAT ?????
+            var y = pair[1].toFloat() // exception !!!!!!!!!!!!!!!!!!!!!!!!
+            list.add(Pair(x, y))
+        }
+        list.sortWith( compareBy({it.first}, {it.second}))
+        dataGraph.xyValues.add(list)
     }
 }
