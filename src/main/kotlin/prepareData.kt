@@ -62,6 +62,7 @@ fun prepareGraph() {
 fun preparePieChart(){
     n = readLine()!!.toInt()
     data1.n = n
+    var list : MutableList <Pair<Int, String> > = mutableListOf()
     for(i in 0 until n){
         var str = readLine()!!.split(' ')
         var name = str[0]
@@ -69,7 +70,11 @@ fun preparePieChart(){
         if(value == null){
             return
         }
-        data1.keys.add(name)
-        data1.values.add(value)
+        list.add(Pair(value, name))
+    }
+    list.sortByDescending { it.first }
+    for(v in list){
+        data1.values.add(v.first)
+        data1.keys.add(v.second)
     }
 }

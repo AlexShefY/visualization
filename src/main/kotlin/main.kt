@@ -5,17 +5,19 @@ import org.jetbrains.skija.*
 import org.jetbrains.skiko.SkiaLayer
 import org.jetbrains.skiko.SkiaRenderer
 import org.jetbrains.skiko.SkiaWindow
+import java.awt.Color
 import java.awt.Dimension
+import java.awt.LinearGradientPaint
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
+import java.awt.geom.Point2D
 import java.io.IOException
 import java.nio.channels.ByteChannel
 import java.nio.file.Files.*
 import java.nio.file.Path
-import kotlin.io.path.*
 import java.nio.file.StandardOpenOption
 import javax.swing.WindowConstants
-import java.nio.file.Files.newByteChannel as newByteChannel
+import kotlin.io.path.*
 
 
 fun main() {
@@ -29,6 +31,7 @@ fun main() {
         typesOfInput.GRAPH -> prepareGraph()
         typesOfInput.STACKEDHISTOHRAM -> prepareClusteredHistohram()
         typesOfInput.PIECHART -> preparePieChart()
+        typesOfInput.BARCHART -> preparePieChart()
     }
     fileName = readLine()!!
     createWindow("pf-2021-viz")
@@ -65,7 +68,15 @@ var arrayListPaints = arrayListOf(
     Paint().apply(){color = 0xAf00FFFF.toInt()}, // Aqua
     Paint().apply(){color = 0xAf00FA9A.toInt()}, // MediumSpringGreen
     Paint().apply(){color = 0xAf8B008B.toInt()}, // DarkMagenta
-    Paint().apply(){color = 0xAf6A5ACD.toInt()} //StateBlue
+    Paint().apply(){color = 0xAf6A5ACD.toInt()},//StateBlue
+    Paint().apply(){color = 0x4fDC143C.toInt()}, // Crimson
+    Paint().apply(){color = 0x4f2E8B57.toInt()}, // green
+    Paint().apply(){color = 0x4f2F4F4F.toInt()}, // green 1
+    Paint().apply(){color = 0x4fFF4500.toInt()}, // OrangeRed
+    Paint().apply(){color = 0x4f00FFFF.toInt()}, // Aqua
+    Paint().apply(){color = 0x4f00FA9A.toInt()}, // MediumSpringGreen
+    Paint().apply(){color = 0x4f8B008B.toInt()}, // DarkMagenta
+    Paint().apply(){color = 0x4f6A5ACD.toInt()} //StateBlue
 )
 /*
  * Подбираем наиболее красивое деление для гистограммы
@@ -95,6 +106,18 @@ fun max(a : Float, b : Float) : Float{
     }
     return b
 }
+
+/*
+ * create shader to gradient fill function
+ */
+fun createShader(stx : Float, endx : Float, color1 : Int, color2 : Int): Shader? {
+    val start = Point(stx, 0f)
+    val end = Point(endx, 0f)
+    val colors = intArrayOf(
+        Paint().apply(){color = color1}.color, // MediumSpringGreen
+        Paint().apply(){color =color2}.color )
+    return Shader.makeLinearGradient(start, end, colors)
+}
 class Renderer(val layer: SkiaLayer): SkiaRenderer {
     val typeface = Typeface.makeFromFile("fonts/JetBrainsMono-Regular.ttf")
     var surface: Surface = Surface.makeRasterN32Premul(1000, 1000)
@@ -106,6 +129,8 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
         mode = PaintMode.FILL
         strokeWidth = 1f
     }
+
+    val paint1 = Paint()
     /*
      * Вывод в окно согласно инструкциям
      */
@@ -114,6 +139,9 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
             when(instruction[0].toString()){
                 "Rect" -> {
                     rectOut(instruction, canvas)
+                }
+                "RectShader" ->{
+                    rectShaderOut(instruction, canvas, paint1)
                 }
                 "String" -> {
                     stringOut(instruction, canvas, font1, paint)
@@ -159,6 +187,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
             typesOfInput.GRAPH -> getInstructionsTypeGraph(paint)
             typesOfInput.STACKEDHISTOHRAM -> getInstructionsStackedHistohram(paint)
             typesOfInput.PIECHART -> getInstructionsPieChart(paint)
+            typesOfInput.BARCHART -> getInstructionsBarChart(paint)
             else -> mutableListOf()
         }
         outWindow(instructions, canvas)

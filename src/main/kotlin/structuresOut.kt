@@ -4,6 +4,7 @@ import org.jetbrains.skija.Paint
 import org.jetbrains.skija.Rect
 
 
+
 fun pointOut(instruction: Array<Any>, canvas: Canvas, paint : Paint){
     canvas.drawPoint(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), paint)
 }
@@ -56,4 +57,22 @@ fun rectOut(instruction : Array<Any>, canvas : Canvas){
         return
     }
     canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), Paint().apply{color = color1})
+}
+
+fun rectShaderOut(instruction : Array<Any>, canvas : Canvas, paint1 : Paint){
+    var x1 = instruction[1].toString().toFloatOrNull()
+    var y1 = instruction[2].toString().toFloatOrNull()
+    var x2 = instruction[3].toString().toFloatOrNull()
+    var y2 = instruction[4].toString().toFloatOrNull()
+    var color1 = instruction[5].toString().toIntOrNull()
+    var color2 = instruction[6].toString().toIntOrNull()
+    if(x1 == null || y1 == null || x2 == null || y2 == null || color1 == null || color2 == null){
+        println("Error")
+        return
+    }
+    var paint2 = paint1
+    paint2.shader = createShader(x1, x2,
+        Paint().apply(){color = color1}.color, // MediumSpringGreen
+        Paint().apply(){color = color2}.color)
+    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), paint2)
 }
