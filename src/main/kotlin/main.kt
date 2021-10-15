@@ -22,15 +22,18 @@ import kotlin.io.path.*
 
 var mapActionsType = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: prepareClusteredHistohram,
 typesOfInput.GRAPH to :: prepareGraph, typesOfInput.STACKEDHISTOHRAM to :: prepareClusteredHistohram,
-typesOfInput.PIECHART to :: preparePieChart, typesOfInput.DISTRIBUTIONGRAPH to :: prepareDistributionGraph)
+typesOfInput.PIECHART to :: preparePieChart, typesOfInput.DISTRIBUTIONGRAPH to :: prepareDistributionGraph,
+typesOfInput.BARCHART to :: preparePieChart)
 
 fun main() {
     type = getTypeInput()
     if(type == null){
-        println("Error")
+        Errors(Error.WRONGTYPE)
         return
     }
-    mapActionsType[type]?.let{it()}
+    if(mapActionsType[type]?.let{it()} == false) {
+        return
+    }
     fileName = readLine()!!
     createWindow("pf-2021-viz")
 }
