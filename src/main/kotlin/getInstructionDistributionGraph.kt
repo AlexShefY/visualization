@@ -1,21 +1,9 @@
 import java.awt.Color
+import org.jetbrains.skija.*
+
 import kotlin.math.*
 
-fun normalizeX(x : Int) : Int{
-    var x1 : Int = 1
-    while(x1 * 10 <= x){
-        x1 *= 10
-    }
-    var x2 = x1
-    while(x2 <= x){
-        x2 += x1
-    }
-    return x2
-}
-fun dist(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float{
-    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
-}
-fun getInstructionDistributionGraph() : MutableList<Array<Any> >{
+fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
     var instructions : MutableList <Array <Any> > = mutableListOf()
     var maxx = 0f
     var maxy = 0f
@@ -37,7 +25,6 @@ fun getInstructionDistributionGraph() : MutableList<Array<Any> >{
             g1[x] = g1[x] + d * d
         }
         g1[x] = sqrt(g1[x] / (n))
-        println(g1[x])
     }
     var maxd = 0.0
     for(i in 0 until numberPix){
@@ -68,5 +55,14 @@ fun getInstructionDistributionGraph() : MutableList<Array<Any> >{
     }
     instructions.add(arrayOf("Line", 310f, 10f, 310f, 610f, colorBlack.toInt()))
     instructions.add(arrayOf("Line", 10f, 310f, 610f, 310f, colorBlack.toInt()))
+    for(i in -10..10) {
+        if(i == 0){
+            continue
+        }
+        instructions.add(arrayOf("Line", 310f, 310f - i * 30f, 313f, 310f - i * 30f, colorBlack.toInt()))
+        instructions.add(arrayOf("Line", 310f + i * 30f, 310f, 310f + i * 30f, 313f, colorBlack.toInt()))
+        instructions.add(arrayOf("String", "${i * delx}", 320f, 310f - i * 30f))
+        instructions.add(arrayOf("String", "${i * dely}", 310f + i * 30f, 320f))
+    }
     return instructions
 }

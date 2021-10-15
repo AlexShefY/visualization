@@ -5,6 +5,7 @@ import org.jetbrains.skija.Paint
  */
 fun getInstructionsType1(paint : Paint) : MutableList<Array<Any> >{
     var instructions : MutableList <Array <Any> > = mutableListOf()
+    instructions.add(arrayOf("Rect", 0f, 0f, 1000f, 1000f, greyColor))
     var propotion = 0
     var allsize = 0f
     for(i in 0 until n){

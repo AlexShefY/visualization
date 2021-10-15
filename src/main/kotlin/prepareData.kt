@@ -46,9 +46,9 @@ fun prepareGraph() {
     n = readLine()!!.toInt()
     dataGraph.n = n
     for(i in 0 until n) {
-        m = readLine()!!.toInt() // exception !!!!!!!!!!!!!!!!!!!
         var name = readLine()!!
         dataGraph.names.add(name)
+        m = readLine()!!.toInt() // exception !!!!!!!!!!!!!!!!!!!
         var list = mutableListOf<Pair<Float, Float>>()
         for (i in 0 until m) {
             var pair = readLine()!!.split(' ')

@@ -5,18 +5,18 @@ import org.jetbrains.skija.Rect
 
 
 
-fun pointOut(instruction: Array<Any>, canvas: Canvas, paint : Paint){
+fun pointOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
     canvas.drawPoint(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), paint)
 }
 
-fun ArcOut(instruction : Array<Any>, canvas : Canvas, paint: Paint){
+fun ArcOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
     canvas.drawArc(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), instruction[3].toString().toFloat(), instruction[4].toString().toFloat(),
         instruction[5].toString().toFloat(), instruction[6].toString().toFloat(), true, Paint().apply{color = instruction[7].toString().toInt()})
 }
 /*
  * Выводим линию по инструкции
  */
-fun lineOut(instruction: Array<Any>, canvas: Canvas) {
+fun lineOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font) {
     var x1 = instruction[1].toString().toFloatOrNull()
     var y1 = instruction[2].toString().toFloatOrNull()
     var x2 = instruction[3].toString().toFloatOrNull()
@@ -32,7 +32,7 @@ fun lineOut(instruction: Array<Any>, canvas: Canvas) {
 /*
  * Выводим строку по инструкции
  */
-fun stringOut(instruction : Array<Any>, canvas : Canvas, font1: Font, paint: Paint){
+fun stringOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
     var str = instruction[1].toString()
     var x1 = instruction[2].toString().toFloatOrNull()
     var y1 = instruction[3].toString().toFloatOrNull()
@@ -40,13 +40,13 @@ fun stringOut(instruction : Array<Any>, canvas : Canvas, font1: Font, paint: Pai
         println("Error")
         return
     }
-    canvas.drawString(str, x1, y1, font1, paint)
+    canvas.drawString(str, x1, y1, font, paint)
 }
 
 /*
  * Вывод прямоугольника по инструкции
  */
-fun rectOut(instruction : Array<Any>, canvas : Canvas){
+fun rectOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
     var x1 = instruction[1].toString().toFloatOrNull()
     var y1 = instruction[2].toString().toFloatOrNull()
     var x2 = instruction[3].toString().toFloatOrNull()
@@ -59,7 +59,7 @@ fun rectOut(instruction : Array<Any>, canvas : Canvas){
     canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), Paint().apply{color = color1.toInt()})
 }
 
-fun rectShaderOut(instruction : Array<Any>, canvas : Canvas, paint1 : Paint){
+fun rectShaderOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
     var x1 = instruction[1].toString().toFloatOrNull()
     var y1 = instruction[2].toString().toFloatOrNull()
     var x2 = instruction[3].toString().toFloatOrNull()
@@ -70,7 +70,7 @@ fun rectShaderOut(instruction : Array<Any>, canvas : Canvas, paint1 : Paint){
         println("Error")
         return
     }
-    var paint2 = paint1
+    var paint2 = paint
     paint2.shader = createShader(x1, x2,
         Paint().apply(){color = color1}.color, // MediumSpringGreen
         Paint().apply(){color = color2}.color)

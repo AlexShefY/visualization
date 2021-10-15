@@ -10,6 +10,7 @@ fun getInstructionsPieChart(paint : Paint) : MutableList<Array<Any> > {
     var pointx = 400f
     var pointy = 400f
     var i = 0
+    instructions.add(arrayOf("Rect", 0f, 0f, 1000f, 1000f, greyColor))
     for(v in data1.values){
         var radius = startradius + (endradius - startradius) * v / sum
         instructions.add(arrayOf("Arc", pointx - radius, pointy - radius, pointx + radius, pointy + radius, startAngle, 360f * v / sum, arrayListPaints[i].color))
