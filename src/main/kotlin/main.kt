@@ -32,6 +32,7 @@ fun main() {
         typesOfInput.STACKEDHISTOHRAM -> prepareClusteredHistohram()
         typesOfInput.PIECHART -> preparePieChart()
         typesOfInput.BARCHART -> preparePieChart()
+        typesOfInput.DISTRIBUTIONGRAPH -> prepareDistributionGraph()
     }
     fileName = readLine()!!
     createWindow("pf-2021-viz")
@@ -115,7 +116,7 @@ fun createShader(stx : Float, endx : Float, color1 : Int, color2 : Int): Shader?
     val end = Point(endx, 0f)
     val colors = intArrayOf(
         Paint().apply(){color = color1}.color, // MediumSpringGreen
-        Paint().apply(){color =color2}.color )
+        Paint().apply(){color = color2}.color)
     return Shader.makeLinearGradient(start, end, colors)
 }
 class Renderer(val layer: SkiaLayer): SkiaRenderer {
@@ -164,7 +165,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
     fun outFile(instrucions: MutableList<Array<Any>>, canvas: Canvas){
         outWindow(instrucions, canvas)
         val image = surface.makeImageSnapshot()
-        val pngData = image.encodeToData(EncodedImageFormat.PNG)
+        val pngData = image.encodeToData(EncodedImageFormat.JPEG)
         val pngBytes = pngData!!.toByteBuffer()
         try {
             val path: Path = Path(fileName)
@@ -188,6 +189,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
             typesOfInput.STACKEDHISTOHRAM -> getInstructionsStackedHistohram(paint)
             typesOfInput.PIECHART -> getInstructionsPieChart(paint)
             typesOfInput.BARCHART -> getInstructionsBarChart(paint)
+            typesOfInput.DISTRIBUTIONGRAPH -> getInstructionDistributionGraph()
             else -> mutableListOf()
         }
         outWindow(instructions, canvas)

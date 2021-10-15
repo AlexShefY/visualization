@@ -51,12 +51,12 @@ fun rectOut(instruction : Array<Any>, canvas : Canvas){
     var y1 = instruction[2].toString().toFloatOrNull()
     var x2 = instruction[3].toString().toFloatOrNull()
     var y2 = instruction[4].toString().toFloatOrNull()
-    var color1 = instruction[5].toString().toIntOrNull()
+    var color1 = instruction[5].toString().toLongOrNull()
     if(x1 == null || y1 == null || x2 == null || y2 == null || color1 == null){
         println("Error")
         return
     }
-    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), Paint().apply{color = color1})
+    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), Paint().apply{color = color1.toInt()})
 }
 
 fun rectShaderOut(instruction : Array<Any>, canvas : Canvas, paint1 : Paint){

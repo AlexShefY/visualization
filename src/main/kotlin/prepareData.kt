@@ -6,6 +6,7 @@ var m = 0
 var fileName = ""
 var type : typesOfInput? = null
 var data1 : classData1 = classData1()
+var dataDistributionGraph = classDistributionGraph()
 
 /*
  * Обработка ввода
@@ -18,6 +19,7 @@ fun getTypeInput() : typesOfInput? {
         "graph" ->  typesOfInput.GRAPH
         "bar chart" -> typesOfInput.BARCHART
         "pie chart" -> typesOfInput.PIECHART
+        "distribution graph" -> typesOfInput.DISTRIBUTIONGRAPH
         else -> null
     }
 }
@@ -65,6 +67,9 @@ fun preparePieChart(){
     var list : MutableList <Pair<Int, String> > = mutableListOf()
     for(i in 0 until n){
         var str = readLine()!!.split(' ')
+        if(str.size != 2){
+            return
+        }
         var name = str[0]
         var value = str[1].toIntOrNull() // exception !!!!!!!!!
         if(value == null){
@@ -76,5 +81,23 @@ fun preparePieChart(){
     for(v in list){
         data1.values.add(v.first)
         data1.keys.add(v.second)
+    }
+}
+
+fun prepareDistributionGraph(){
+    n = readLine()!!.toInt()
+    dataDistributionGraph.n = n
+    for(i in 0 until n){
+        var str = readLine()!!.split(' ')
+        if(str.size != 2){
+            return
+        }
+        var x = str[0].toFloatOrNull()
+        var y = str[1].toFloatOrNull() // exception !!!!!!!!!
+        if(x == null || y == null){
+            return
+        }
+        dataDistributionGraph.xValues.add(x)
+        dataDistributionGraph.yValues.add(y)
     }
 }

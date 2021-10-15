@@ -12,3 +12,7 @@ class classGraph(var n : Int = 0, var names : MutableList<String> = mutableListO
 class classData1(var n : Int = 0, var keys : MutableList<String> = mutableListOf(), var values : MutableList<Int> = mutableListOf()){
 
 }
+
+class classDistributionGraph(var n : Int = 0, var xValues: MutableList<Float> = mutableListOf(), var yValues : MutableList<Float> = mutableListOf()){
+
+}
