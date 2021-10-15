@@ -1,7 +1,7 @@
 import kotlin.math.sqrt
 
 /*
- * Подбираем наиболее красивое деление для гистограммы
+ * select the most appropriate division for the histogram
  */
 fun normal(a : Int) : Int{
     var p = 1
@@ -19,6 +19,7 @@ fun normal(a : Int) : Int{
     }
     return p
 }
+
 fun max(a : Float, b : Float) : Float{
     if(a > b){
         return a
@@ -26,17 +27,6 @@ fun max(a : Float, b : Float) : Float{
     return b
 }
 
-fun normalizeX(x : Int) : Int{
-    var x1 : Int = 1
-    while(x1 * 10 <= x){
-        x1 *= 10
-    }
-    var x2 = x1
-    while(x2 <= x){
-        x2 += x1
-    }
-    return x2
-}
 fun dist(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float{
     return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 }

@@ -11,8 +11,8 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
         maxx = max(maxx, abs(dataDistributionGraph.xValues[i]))
         maxy = max(maxy, abs(dataDistributionGraph.yValues[i]))
     }
-    var delx = normalizeX((maxx / 10).toInt())
-    var dely = normalizeX((maxy / 10).toInt())
+    var delx = normal((maxx / 10).toInt())
+    var dely = normal((maxy / 10).toInt())
     var numberPix = 600
     var dist : Array<Array<Double> > = Array(numberPix) {Array(numberPix) {0.0} }
     n = dataDistributionGraph.n

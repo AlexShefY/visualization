@@ -78,7 +78,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
      * output to the window according to the instructions
      */
     var mapOutActions = mapOf("Rect" to :: rectOut, "RectShader" to :: rectShaderOut,
-    "String" to :: stringOut, "Point" to :: pointOut, "Arc" to :: ArcOut)
+    "String" to :: stringOut, "Point" to :: pointOut, "Arc" to :: ArcOut, "Line" to :: lineOut)
     fun outWindow(instructions : MutableList<Array<Any>>, canvas : Canvas){
         for(instruction in instructions){
             var paint2 = when(instruction[0].toString()){
