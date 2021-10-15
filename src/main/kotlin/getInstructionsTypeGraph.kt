@@ -1,15 +1,10 @@
 import org.jetbrains.skija.Paint
+import kotlin.math.*
 
 fun getInstructionsTypeGraph(paint : Paint) : MutableList < Array<Any> > {
     var instructions : MutableList <Array <Any> > = mutableListOf()
-    var maxx = 0f
-    var maxy = 0f
-    for(i in 0 until dataGraph.n){
-        for(j in 0 until dataGraph.xyValues[i].size) {
-            maxx = max(maxx, dataGraph.xyValues[i][j].first)
-            maxy = max(maxy, dataGraph.xyValues[i][j].second)
-        }
-    }
+    var maxx = dataGraph.xyValues.maxOf { it.maxOf { it.first } }
+    var maxy = dataGraph.xyValues.maxOf { it.maxOf { it.second } }
     var proportionx = ((maxx + 9) / 10).toInt()
     var proportiony = ((maxy + 9) / 10).toInt()
     if(proportionx == 0){

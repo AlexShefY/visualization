@@ -1,4 +1,4 @@
-var data : ArrayList<classData> = arrayListOf()
+var data : MutableList<classData> = mutableListOf()
 var dataGraph : classGraph = classGraph()
 var fields : List<String> = listOf()
 var n = 0

@@ -19,14 +19,6 @@ fun normal(a : Int) : Int{
     }
     return p
 }
-
-fun max(a : Float, b : Float) : Float{
-    if(a > b){
-        return a
-    }
-    return b
-}
-
 fun dist(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float{
     return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 }

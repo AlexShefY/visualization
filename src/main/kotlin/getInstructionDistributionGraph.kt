@@ -5,12 +5,8 @@ import kotlin.math.*
 
 fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
     var instructions : MutableList <Array <Any> > = mutableListOf()
-    var maxx = 0f
-    var maxy = 0f
-    for(i in 0 until dataDistributionGraph.n){
-        maxx = max(maxx, abs(dataDistributionGraph.xValues[i]))
-        maxy = max(maxy, abs(dataDistributionGraph.yValues[i]))
-    }
+    var maxx = dataDistributionGraph.xValues.maxOf { abs(it) }
+    var maxy = dataDistributionGraph.yValues.maxOf { abs(it) }
     var delx = normal((maxx / 10).toInt())
     var dely = normal((maxy / 10).toInt())
     var numberPix = 600
@@ -40,7 +36,6 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
         }
     }
     var colorBlack = 0xff000000.toLong()
-    var colorWhite = 0xffffffff.toLong()
     for(i in 0 until numberPix){
         for(j in 0 until numberPix){
             var xgraph = i * 1f + 10f
@@ -56,13 +51,12 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
     instructions.add(arrayOf("Line", 310f, 10f, 310f, 610f, colorBlack.toInt()))
     instructions.add(arrayOf("Line", 10f, 310f, 610f, 310f, colorBlack.toInt()))
     for(i in -10..10) {
-        if(i == 0){
-            continue
+        if(i != 0) {
+            instructions.add(arrayOf("Line", 310f, 310f - i * 30f, 313f, 310f - i * 30f, colorBlack.toInt()))
+            instructions.add(arrayOf("Line", 310f + i * 30f, 310f, 310f + i * 30f, 313f, colorBlack.toInt()))
+            instructions.add(arrayOf("String", "${i * delx}", 320f, 310f - i * 30f))
+            instructions.add(arrayOf("String", "${i * dely}", 310f + i * 30f, 320f))
         }
-        instructions.add(arrayOf("Line", 310f, 310f - i * 30f, 313f, 310f - i * 30f, colorBlack.toInt()))
-        instructions.add(arrayOf("Line", 310f + i * 30f, 310f, 310f + i * 30f, 313f, colorBlack.toInt()))
-        instructions.add(arrayOf("String", "${i * delx}", 320f, 310f - i * 30f))
-        instructions.add(arrayOf("String", "${i * dely}", 310f + i * 30f, 320f))
     }
     return instructions
 }

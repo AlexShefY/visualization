@@ -1,22 +1,13 @@
 import org.jetbrains.skija.Paint
-
+import kotlin.math.*
 /*
  * Формирование инструкций вывода по входным данным
  */
 fun getInstructionsType1(paint : Paint) : MutableList<Array<Any> >{
     var instructions : MutableList <Array <Any> > = mutableListOf()
     instructions.add(arrayOf("Rect", 0f, 0f, 1000f, 1000f, greyColor))
-    var propotion = 0
-    var allsize = 0f
-    for(i in 0 until n){
-        allsize += max(data[i].values.size * 20f + 40f, 6.5f * data[i].key.length)
-        for(value in data[i].values){
-            if(value > propotion){
-                propotion = value
-            }
-        }
-    }
-    propotion /= 10
+    var propotion = data.maxOf { it.values.maxOf {it} }.toInt() / 10
+    var allsize = data.sumOf { max(it.values.size * 20f + 40f, 6.5f * it.key.length).toDouble() }
     if(propotion == 0){
         propotion++
     }
