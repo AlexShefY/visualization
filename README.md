@@ -76,16 +76,16 @@ The program supports 6 types of histograms:
 >>
 >> 6.3 file to output
 
->> Examples of input:
->>
->> [exampleBarChart](exampleBarChart.txt)
->>
->> [exampleClusteredHistogram](exampleClusteredHistogram.txt)
->>
->> [exampleDistributionGraph](exampleDistributionGraph.txt)
->> 
->> [exampleGraph](exampleGraph.txt)
->>
->> [examplePieChart](examplePieChart.txt)
->>
->> [exampleStackedHistogram](exampleStackedHistogram.txt)
+> Examples of input:
+>
+> [exampleBarChart](exampleBarChart.txt)
+>
+> [exampleClusteredHistogram](exampleClusteredHistogram.txt)
+>
+> [exampleDistributionGraph](exampleDistributionGraph.txt)
+> 
+> [exampleGraph](exampleGraph.txt)
+>
+> [examplePieChart](examplePieChart.txt)
+>
+> [exampleStackedHistogram](exampleStackedHistogram.txt)
