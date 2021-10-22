@@ -77,4 +77,15 @@ The program supports 6 types of histograms:
 >> 6.3 file to output
 
 >> Examples of input:
+>>
 >> [exampleBarChart](exampleBarChart.txt)
+>>
+>> [exampleClusteredHistogram](exampleClusteredHistogram.txt)
+>>
+>> [exampleDistributionGraph](jetbrains://idea/navigate/reference?project=pf-2021-viz&path=exampleDistributionGraph.txt)
+>> 
+>> [exampleGraph](exampleGraph.txt)
+>>
+>> [examplePieChart](examplePieChart.txt)
+>>
+>> [exampleStackedHistogram](exampleStackedHistogram.txt)
