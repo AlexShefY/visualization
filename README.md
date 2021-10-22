@@ -17,17 +17,20 @@ The program supports 6 types of histograms:
 >>
 >> 1.5 file to output
 >
+> 
 >>> 2. graph
 >>
 >> To build this histogram you should input:
 >>
 >> 2.1 fields
 >>
->> 2.2 number of point
+>> 2.2 number of graphs
 >>
->> 2.3 x-value and y-value for each point on a separate line
+>> 2.3 number of points for each graph
 >>
->> 2.4 file to output
+>> 2.4 x-value and y-value for each point on a separate line
+>>
+>> 2.5 file to output
 >
 >>> 3. pie chart
 >>
@@ -72,3 +75,6 @@ The program supports 6 types of histograms:
 >> 6.2 pairs key-value (each pair on a separate line)
 >>
 >> 6.3 file to output
+
+>> Examples of input:
+>> [exampleBarChart](exampleBarChart.txt)

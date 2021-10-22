@@ -1,0 +1,10 @@
+stacked histogram
+5
+2
+first second
+day1 40 51
+day2 30 93
+day3 125 42
+day4 130 34
+day5 20 30
+my.png

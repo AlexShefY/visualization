@@ -1,0 +1,8 @@
+bar chart
+5
+first 10000
+second 30000
+third 20000
+fourth 24000
+fifth 40000
+my.png
