@@ -1,5 +1,5 @@
 # Курс основ программирования на МКН СПбГУ
-## Проект 3: визуализация данных
+## Project 3: visualization of data
 
 The program supports 6 types of histograms:
 
