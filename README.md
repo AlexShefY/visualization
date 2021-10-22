@@ -82,7 +82,7 @@ The program supports 6 types of histograms:
 >>
 >> [exampleClusteredHistogram](exampleClusteredHistogram.txt)
 >>
->> [exampleDistributionGraph](jetbrains://idea/navigate/reference?project=pf-2021-viz&path=exampleDistributionGraph.txt)
+>> [exampleDistributionGraph](exampleDistributionGraph.txt)
 >> 
 >> [exampleGraph](exampleGraph.txt)
 >>
