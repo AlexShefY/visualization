@@ -4,10 +4,13 @@
 The program accept name of file with data as input.
 
 To run the program firstly you should run it from the command line
-in the directory pf-2021-viz-AlexShefY with command
+in the directory pf-2021-viz-AlexShefY with command:
+
 gradlew run --args="[name of file with data]".
 
-Example: gradlew run --args="exampleDistributionGraph.txt"
+Example:
+
+gradlew run --args="exampleDistributionGraph.txt"
 
 Decription of input file for each type of histogram:
 1. clustered histogram
