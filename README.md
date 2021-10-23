@@ -1,8 +1,15 @@
 # Курс основ программирования на МКН СПбГУ
 ## Project 3: visualization of data
 
-The program supports 6 types of histograms:
+The program accept name of file with data as input.
 
+To run the program firstly you should run it from the command line
+in the directory pf-2021-viz-AlexShefY with command
+gradlew run --args="[name of file with data]".
+
+Example: gradlew run --args="exampleDistributionGraph.txt"
+
+Decription of input file for each type of histogram:
 1. clustered histogram
 
    To build this histogram you should input:
@@ -76,17 +83,17 @@ The program supports 6 types of histograms:
 
 >Examples of input:
 >
->[example Bar Chart](exampleBarChart.txt)
+>[example input file Bar Chart](exampleBarChart.txt)
 >
->[example Clustered Histogram](exampleClusteredHistogram.txt)
+>[example input file Clustered Histogram](exampleClusteredHistogram.txt)
 >
->[example Distribution Graph](exampleDistributionGraph.txt)
+>[example input file Distribution Graph](exampleDistributionGraph.txt)
 > 
->[example Graph](exampleGraph.txt)
+>[example input file Graph](exampleGraph.txt)
 >
->[example Pie Chart](examplePieChart.txt)
+>[example input file Pie Chart](examplePieChart.txt)
 >
->[example Stacked Histogram](exampleStackedHistogram.txt)
+>[example input file Stacked Histogram](exampleStackedHistogram.txt)
  
 >Examples of output:
 > 
