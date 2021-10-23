@@ -11,6 +11,7 @@ import java.awt.LinearGradientPaint
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionAdapter
 import java.awt.geom.Point2D
+import java.io.File
 import java.io.IOException
 import java.nio.channels.ByteChannel
 import java.nio.file.Files.*
@@ -24,8 +25,10 @@ var mapActionsType = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: prepareClustere
 typesOfInput.GRAPH to :: prepareGraph, typesOfInput.STACKEDHISTOHRAM to :: prepareClusteredHistohram,
 typesOfInput.PIECHART to :: preparePieChart, typesOfInput.DISTRIBUTIONGRAPH to :: prepareDistributionGraph,
 typesOfInput.BARCHART to :: preparePieChart)
-
-fun main() {
+var st = 0
+var lines : MutableList<String> = mutableListOf()
+fun main(args : Array<String>) {
+    lines = File(args[0]).readText().split('\n').map{it.removeSuffix("\r")}.toMutableList()
     type = getTypeInput()
     if(type == null){
         Errors(Error.WRONGTYPE)
@@ -34,7 +37,7 @@ fun main() {
     if(mapActionsType[type]?.let{it()} == false) {
         return
     }
-    fileName = readLine()!!
+    fileName = lines[st++]
     createWindow("pf-2021-viz")
 }
 

@@ -12,7 +12,7 @@ var dataDistributionGraph = classDistributionGraph()
  * Input processing
  */
 fun getTypeInput() : typesOfInput? {
-    var s =readLine()!!.toString()
+    var s = lines[st++]
     return when(s){
         "clustered histogram" ->  typesOfInput.CLUSTEREDHISTOHRAM
         "stacked histogram" ->  typesOfInput.STACKEDHISTOHRAM
@@ -25,21 +25,21 @@ fun getTypeInput() : typesOfInput? {
 }
 
 fun prepareClusteredHistohram() : Boolean{
-    var nInput = readLine()!!.toIntOrNull()
-    var mInput = readLine()!!.toIntOrNull()
+    var nInput = lines[st++].toIntOrNull()
+    var mInput = lines[st++].toIntOrNull()
     if(nInput == null || mInput == null){
         Errors(Error.INTINPUT)
         return false
     }
     n = nInput
     m = mInput
-    fields = readLine()!!.split(' ')
+    fields = lines[st++].split(' ')
     if(fields.size != m){
         Errors(Error.MATCHSIZEFIELDS)
         return false
     }
     for(i in 0 until n){
-        var pair = readLine()!!.split(' ')
+        var pair = lines[st++].split(' ')
         if(pair.isEmpty()){
             Errors(Error.EMPTYINPUT)
             return false
@@ -64,12 +64,12 @@ fun prepareClusteredHistohram() : Boolean{
 }
 
 fun prepareGraph() : Boolean {
-    fields = readLine()!!.split(' ')
+    fields = lines[st++].split(' ')
     if(fields.size != 2){
         Errors(Error.TWOFIELDS)
         return false
     }
-    var nInput = readLine()!!.toIntOrNull()
+    var nInput = lines[st++].toIntOrNull()
     if(nInput == null){
         Errors(Error.INTINPUT)
         return false
@@ -77,13 +77,13 @@ fun prepareGraph() : Boolean {
     n = nInput
     dataGraph.n = nInput
     for(i in 0 until n){
-        var name = readLine()!!
+        var name = lines[st++]
         if(name.isEmpty()){
             Errors(Error.EMPTYINPUT)
             continue
         }
         dataGraph.names.add(name)
-        var mInput = readLine()!!.toIntOrNull()
+        var mInput = lines[st++].toIntOrNull()
         if(mInput == null){
             Errors(Error.INTINPUT)
             return false
@@ -91,7 +91,7 @@ fun prepareGraph() : Boolean {
         m = mInput
         var list = mutableListOf<Pair<Float, Float>>()
         for (i in 0 until m) {
-            var pair = readLine()!!.split(' ')
+            var pair = lines[st++].split(' ')
             if(pair.size != 2){
                 Errors(Error.MATCHSIZEFIELDS)
                 return false
@@ -111,7 +111,7 @@ fun prepareGraph() : Boolean {
 }
 
 fun preparePieChart() : Boolean{
-    var nInput = readLine()!!.toIntOrNull()
+    var nInput = lines[st++].toIntOrNull()
     if(nInput == null){
         Errors(Error.INTINPUT)
         return false
@@ -120,7 +120,7 @@ fun preparePieChart() : Boolean{
     data1.n = n
     var list : MutableList <Pair<Int, String> > = mutableListOf()
     for(i in 0 until n){
-        var str = readLine()!!.split(' ')
+        var str = lines[st++].split(' ')
         if(str.size != 2){
             Errors(Error.TWOFIELDS)
             return false
@@ -142,7 +142,7 @@ fun preparePieChart() : Boolean{
 }
 
 fun prepareDistributionGraph() : Boolean{
-    var nInput = readLine()!!.toIntOrNull()
+    var nInput = lines[st++].toIntOrNull()
     if(nInput == null){
         Errors(Error.INTINPUT)
         return false
@@ -150,7 +150,7 @@ fun prepareDistributionGraph() : Boolean{
     n = nInput
     dataDistributionGraph.n = n
     for(i in 0 until n){
-        var str = readLine()!!.split(' ')
+        var str = lines[st++].split(' ')
         if(str.size != 2){
             Errors(Error.TWOFIELDS)
             return false
