@@ -5,4 +5,4 @@ second 30000
 third 20000
 fourth 24000
 fifth 40000
-my.png
+examplePieChartOut.png

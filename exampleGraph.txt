@@ -26,4 +26,4 @@ fourth
 6 342
 9 243
 16 302
-my.png
+exampleGraphOut.png
