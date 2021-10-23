@@ -6,65 +6,67 @@ import org.jetbrains.skija.Rect
 /*
  * out point
  */
-fun pointOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
-    canvas.drawPoint(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), paint)
+fun pointOut(instruction : Instruction, canvas : Canvas){
+    canvas.drawPoint(instruction.coordinates[0], instruction.coordinates[1], instruction.paints[0])
 }
 
 /*
  * out arc
  */
-fun ArcOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
-    canvas.drawArc(instruction[1].toString().toFloat(), instruction[2].toString().toFloat(), instruction[3].toString().toFloat(), instruction[4].toString().toFloat(),
-        instruction[5].toString().toFloat(), instruction[6].toString().toFloat(), true, Paint().apply{color = instruction[7].toString().toInt()})
+fun ArcOut(instruction : Instruction, canvas : Canvas){
+    canvas.drawArc(instruction.coordinates[0], instruction.coordinates[1], instruction.coordinates[2], instruction.coordinates[3],
+        instruction.coordinates[4], instruction.coordinates[5], true, instruction.paints[0])
 }
 
 /*
  * out line
  */
-fun lineOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font) {
-    var x1 = instruction[1].toString().toFloat()
-    var y1 = instruction[2].toString().toFloat()
-    var x2 = instruction[3].toString().toFloat()
-    var y2 = instruction[4].toString().toFloat()
-    var color1 = instruction[5].toString().toInt()
-    canvas.drawLine(x1, y1, x2, y2, Paint().apply { color = color1 })
+fun lineOut(instruction : Instruction, canvas : Canvas) {
+    var x1 = instruction.coordinates[0]
+    var y1 = instruction.coordinates[1]
+    var x2 = instruction.coordinates[2]
+    var y2 = instruction.coordinates[3]
+    var paint = instruction.paints[0]
+    canvas.drawLine(x1, y1, x2, y2, paint)
 }
 
 /*
  * out string
  */
-fun stringOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
-    var str = instruction[1].toString()
-    var x1 = instruction[2].toString().toFloat()
-    var y1 = instruction[3].toString().toFloat()
+fun stringOut(instruction : Instruction, canvas : Canvas){
+    var str = instruction.text
+    var x1 = instruction.coordinates[0]
+    var y1 = instruction.coordinates[1]
+    var font = instruction.font
+    var paint = instruction.paints[0]
     canvas.drawString(str, x1, y1, font, paint)
 }
 
 /*
  * out rectangle
  */
-fun rectOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
-    var x1 = instruction[1].toString().toFloat()
-    var y1 = instruction[2].toString().toFloat()
-    var x2 = instruction[3].toString().toFloat()
-    var y2 = instruction[4].toString().toFloat()
-    var color1 = instruction[5].toString().toLong()
-    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), Paint().apply{color = color1.toInt()})
+fun rectOut(instruction : Instruction, canvas : Canvas){
+    var x1 = instruction.coordinates[0]
+    var y1 = instruction.coordinates[1]
+    var x2 = instruction.coordinates[2]
+    var y2 = instruction.coordinates[3]
+    var paint = instruction.paints[0]
+    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), paint)
 }
 
 /*
  * out rectangle colored with gradient
  */
-fun rectShaderOut(instruction : Array<Any>, canvas : Canvas, paint : Paint, font : Font){
-    var x1 = instruction[1].toString().toFloat()
-    var y1 = instruction[2].toString().toFloat()
-    var x2 = instruction[3].toString().toFloat()
-    var y2 = instruction[4].toString().toFloat()
-    var color1 = instruction[5].toString().toInt()
-    var color2 = instruction[6].toString().toInt()
-    var paint2 = paint
-    paint2.shader = createShader(x1, x2,
-        Paint().apply(){color = color1}.color, // MediumSpringGreen
-        Paint().apply(){color = color2}.color)
-    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), paint2)
+fun rectShaderOut(instruction : Instruction, canvas : Canvas){
+    var x1 = instruction.coordinates[0]
+    var y1 = instruction.coordinates[1]
+    var x2 = instruction.coordinates[2]
+    var y2 = instruction.coordinates[3]
+    var paint1 = instruction.paints[0]
+    var paint2 = instruction.paints[1]
+    var paint3 = instruction.paints[2]
+    paint3.shader = createShader(x1, x2,
+        paint2, // MediumSpringGreen
+        paint1)
+    canvas.drawRect(Rect.makeXYWH(x1, y1, x2, y2), paint3)
 }

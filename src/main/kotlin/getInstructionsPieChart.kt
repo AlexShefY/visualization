@@ -1,8 +1,9 @@
 import org.jetbrains.skija.Paint
 import kotlin.math.*
 
-fun getInstructionsPieChart(paint : Paint) : MutableList<Array<Any> > {
-    var instructions : MutableList <Array <Any> > = mutableListOf()
+
+fun getInstructionsPieChart(paint : Paint) : MutableList<Instruction > {
+    var instructions : MutableList <Instruction > = mutableListOf()
     var sum = data1.values.sum()
     var startAngle = -90f
     var startradius = 150f
@@ -10,18 +11,22 @@ fun getInstructionsPieChart(paint : Paint) : MutableList<Array<Any> > {
     var pointx = 400f
     var pointy = 400f
     var i = 0
-    instructions.add(arrayOf("Rect", 0f, 0f, 1000f, 1000f, greyColor))
+    instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(0f, 0f, 1000f, 1000f), paints = arrayListOf(Paint().apply{ color = greyColor})))
     for(v in data1.values){
         var radius = startradius + (endradius - startradius) * v / sum
-        instructions.add(arrayOf("Arc", pointx - radius, pointy - radius, pointx + radius, pointy + radius, startAngle, 360f * v / sum, arrayListPaints[i].color))
-        instructions.add(arrayOf("Arc", pointx - startradius, pointy - startradius, pointx + startradius, pointy + startradius, startAngle, 360f * v / sum, 0xffffffff.toInt()))
-        instructions.add(arrayOf("Arc", pointx - startradius, pointy - startradius, pointx + startradius, pointy + startradius, startAngle, 360f * v / sum, arrayListPaints[i + 8].color))
+        instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - radius, pointy - radius, pointx + radius, pointy + radius, startAngle, 360f * v / sum),
+            paints = arrayListOf(arrayListPaints[i])))
+        instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - startradius, pointy - startradius, pointx + startradius, pointy + startradius, startAngle, 360f * v / sum),
+            paints = arrayListOf(Paint().apply { color = whiteColor })))
+        instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - startradius, pointy - startradius, pointx + startradius, pointy + startradius, startAngle, 360f * v / sum),
+            paints = arrayListOf(arrayListPaints[i + 8])))
         startAngle += 360f * v / sum
         i++
     }
-    instructions.add(arrayOf("Arc", pointx - 50f, pointy - 50f, pointx + 50f, pointy + 50f, -90f, 360f, greyColor))
-    instructions.add(arrayOf("String", "All", pointx - 5f, pointy))
-    instructions.add(arrayOf("String", "$sum", pointx - "$sum".length * 3f, pointy + 10f))
+    instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - 50f, pointy - 50f, pointx + 50f, pointy + 50f, -90f, 360f),
+        paints = arrayListOf(Paint().apply { color = greyColor } )))
+    instructions.add(Instruction(Type = "String", text = "All", coordinates = floatArrayOf(pointx - 5f, pointy)))
+    instructions.add(Instruction(Type = "String", text = "$sum", coordinates = floatArrayOf(pointx - "$sum".length * 3f, pointy + 10f)))
     startAngle = -90f
     var leftx = 100f
     var lefty = 100f
@@ -33,15 +38,15 @@ fun getInstructionsPieChart(paint : Paint) : MutableList<Array<Any> > {
         var centralX = pointx + startradius * cos(angleTo / 180f * PI) / 2
         var centralY = pointy - startradius * sin(angleTo / 180f * PI) / 2
         var percent = v * 100 / sum
-        instructions.add(arrayOf("String", "$percent%", centralX, centralY))
+        instructions.add(Instruction(Type = "String", text = "$percent%", coordinates = floatArrayOf(centralX.toFloat(), centralY.toFloat())))
         if(angleTo < -90f || angleTo > 90f){
-            instructions.add(arrayOf("String", data1.keys[i], leftx, lefty))
-            instructions.add(arrayOf("Rect", leftx - 10f, lefty - 10f, 10f, 10f, arrayListPaints[i].color))
+            instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(leftx, lefty)))
+            instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(leftx - 10f, lefty - 10f, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
             lefty += 40f
         }
         else{
-            instructions.add(arrayOf("String", data1.keys[i], rightx, righty))
-            instructions.add(arrayOf("Rect", rightx - 10f, righty - 10f, 10f, 10f, arrayListPaints[i].color))
+            instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(rightx, righty)))
+            instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(rightx - 10f, righty - 10f, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
             righty += 40f
         }
         startAngle += 360f * v / sum

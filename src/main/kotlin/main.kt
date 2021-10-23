@@ -56,12 +56,10 @@ fun createWindow(title: String) = runBlocking(Dispatchers.Swing) {
 /*
  * create shader to gradient fill function
  */
-fun createShader(stx : Float, endx: Float, color1 : Int, color2 : Int): Shader? {
+fun createShader(stx : Float, endx: Float, paint1 : Paint, paint2: Paint): Shader? {
     val start = Point(stx, 0f)
     val end = Point(endx, 0f)
-    val colors = intArrayOf(
-        Paint().apply(){color = color1}.color, // MediumSpringGreen
-        Paint().apply(){color = color2}.color)
+    val colors = intArrayOf(paint1.color, paint2.color)
     return Shader.makeLinearGradient(start, end, colors)
 }
 
@@ -82,19 +80,21 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
      */
     var mapOutActions = mapOf("Rect" to :: rectOut, "RectShader" to :: rectShaderOut,
     "String" to :: stringOut, "Point" to :: pointOut, "Arc" to :: ArcOut, "Line" to :: lineOut)
-    fun outWindow(instructions : MutableList<Array<Any>>, canvas : Canvas){
+    fun outWindow(instructions : MutableList<Instruction>, canvas : Canvas){
         for(instruction in instructions){
-            var paint2 = when(instruction[0].toString()){
+            var paint2 = when(instruction.Type){
                 "RectShader" -> paint1
                 else -> paint
             }
-            mapOutActions[instruction[0].toString()]?.let{it(instruction, canvas, paint2, font1)}
+            instruction.paints.add(paint2)
+            instruction.font = font1
+            mapOutActions[instruction.Type]?.let{it(instruction, canvas)}
         }
     }
     /*
      * Output to file
      */
-    fun outFile(instrucions: MutableList<Array<Any>>, canvas: Canvas){
+    fun outFile(instrucions: MutableList<Instruction>, canvas: Canvas){
         outWindow(instrucions, canvas)
         val image = surface.makeImageSnapshot()
         val pngData = image.encodeToData(EncodedImageFormat.JPEG)
@@ -121,7 +121,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
     typesOfInput.DISTRIBUTIONGRAPH to :: getInstructionDistributionGraph)
 
     fun printDiagram(canvas : Canvas, width: Int, height: Int, nanoTime: Long){
-        var instructions = mutableListOf<Array<Any>> ()
+        var instructions = mutableListOf<Instruction> ()
         mapGetInstruction[type]?.let{instructions = it(paint)}
         outWindow(instructions, canvas)
         outFile(instructions, canvas1)

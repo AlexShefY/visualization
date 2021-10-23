@@ -3,8 +3,8 @@ import org.jetbrains.skija.*
 
 import kotlin.math.*
 
-fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
-    var instructions : MutableList <Array <Any> > = mutableListOf()
+fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
+    var instructions : MutableList <Instruction> = mutableListOf()
     var maxx = dataDistributionGraph.xValues.maxOf { abs(it) }
     var maxy = dataDistributionGraph.yValues.maxOf { abs(it) }
     var delx = normal((maxx / 10).toInt())
@@ -45,17 +45,17 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Array<Any> >{
             var colorCurGreen = (dist[i][j] * 0x00 + (1.0 -  dist[i][j]) * 0xff).toLong()
             var colorCurBlue = (dist[i][j] * 0x00 + (1.0 -  dist[i][j]) * 0xff).toLong()
             var colorCur = 0xff000000 + colorCurRed * 0x10000 + colorCurGreen * 0x100 + colorCurBlue
-            instructions.add(arrayOf("Rect", xgraph, ygraph, 1f,  1f, colorCur))
+            instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(xgraph, ygraph,1f, 1f), paints = arrayListOf(Paint().apply { color = colorCur.toInt() })))
         }
     }
-    instructions.add(arrayOf("Line", 310f, 10f, 310f, 610f, colorBlack.toInt()))
-    instructions.add(arrayOf("Line", 10f, 310f, 610f, 310f, colorBlack.toInt()))
+    instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(310f, 10f, 310f, 610f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))
+    instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(10f, 310f, 610f, 310f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))
     for(i in -10..10) {
         if(i != 0) {
-            instructions.add(arrayOf("Line", 310f, 310f - i * 30f, 313f, 310f - i * 30f, colorBlack.toInt()))
-            instructions.add(arrayOf("Line", 310f + i * 30f, 310f, 310f + i * 30f, 313f, colorBlack.toInt()))
-            instructions.add(arrayOf("String", "${i * delx}", 320f, 310f - i * 30f))
-            instructions.add(arrayOf("String", "${i * dely}", 310f + i * 30f, 320f))
+            instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(310f, 310f - i * 30f, 313f, 310f - i * 30f), paints = arrayListOf(Paint().apply{ color = colorBlack.toInt() } )))
+            instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(310f + i * 30f, 310f, 310f + i * 30f, 313f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))
+            instructions.add(Instruction(Type = "String", text = "${i * delx}", coordinates = floatArrayOf(320f, 310f - i * 30f)))
+            instructions.add(Instruction(Type = "String", text = "${i * dely}", coordinates = floatArrayOf(310f + i * 30f, 320f)))
         }
     }
     return instructions
