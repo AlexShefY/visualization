@@ -12,7 +12,7 @@ fun getInstructionsStackedHistohram(paint : Paint) : MutableList<Instruction>{
         instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(30f, 30f + 20 * j * 1f,  10f, 10f), paints = arrayListOf(arrayListPaints[j])))
         instructions.add(Instruction(Type = "String", text = fields[j], coordinates = floatArrayOf(40f, 40f + 20 * j * 1f)))
     }
-    var proportion = maxsum / 10
+    var proportion = (maxsum / 10).toInt()
     if(proportion == 0){
         proportion = 1
     }

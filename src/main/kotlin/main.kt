@@ -21,8 +21,8 @@ import javax.swing.WindowConstants
 import kotlin.io.path.*
 
 
-var mapActionsType = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: prepareClusteredHistohram,
-typesOfInput.GRAPH to :: prepareGraph, typesOfInput.STACKEDHISTOHRAM to :: prepareClusteredHistohram,
+var mapActionsType = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: prepareClusteredHistogram,
+typesOfInput.GRAPH to :: prepareGraph, typesOfInput.STACKEDHISTOHRAM to :: prepareClusteredHistogram,
 typesOfInput.PIECHART to :: preparePieChart, typesOfInput.DISTRIBUTIONGRAPH to :: prepareDistributionGraph,
 typesOfInput.BARCHART to :: preparePieChart)
 var st = 0
@@ -31,7 +31,7 @@ fun main(args : Array<String>) {
     lines = File(args[0]).readText().split('\n').map{it.removeSuffix("\r")}.toMutableList()
     type = getTypeInput()
     if(type == null){
-        Errors(Error.WRONGTYPE)
+        Errors(Error.WRONGTYPE, st - 1)
         return
     }
     if(mapActionsType[type]?.let{it()} == false) {

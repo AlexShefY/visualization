@@ -37,7 +37,7 @@ fun getInstructionsPieChart(paint : Paint) : MutableList<Instruction > {
         var angleTo = -startAngle - 180f * v / sum
         var centralX = pointx + startradius * cos(angleTo / 180f * PI) / 2
         var centralY = pointy - startradius * sin(angleTo / 180f * PI) / 2
-        var percent = v * 100 / sum
+        var percent = (v * 100 / sum).toInt()
         instructions.add(Instruction(Type = "String", text = "$percent%", coordinates = floatArrayOf(centralX.toFloat(), centralY.toFloat())))
         if(angleTo < -90f || angleTo > 90f){
             instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(leftx, lefty)))

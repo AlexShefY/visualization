@@ -1,3 +1,4 @@
+
 var data : MutableList<classData> = mutableListOf()
 var dataGraph : classGraph = classGraph()
 var fields : List<String> = listOf()
@@ -24,41 +25,72 @@ fun getTypeInput() : typesOfInput? {
     }
 }
 
-fun prepareClusteredHistohram() : Boolean{
+fun getKeyValues(m : Int) : Pair<String, MutableList<Float>>?{
+    var line = lines[st++].split(' ').toMutableList()
+    if(line.isEmpty()){
+        Errors(Error.EMPTYINPUT, st - 1)
+        return null
+    }
+    var key = line[0]
+    line.removeFirst()
+    var values = line.map{
+        if(it.toFloatOrNull() == null){
+            Errors(Error.FLOATINPUT, st - 1)
+            return null
+        }
+        it.toFloat()
+    }.toMutableList()
+    if(values.size != m){
+        Errors(Error.MATCHSIZEFIELDS, st - 1)
+        return null
+    }
+    return Pair(key, values)
+}
+
+fun getPoints() : Pair<Int, MutableList<Pair<Float, Float>>>?{
+    var n = lines[st++].toIntOrNull()
+    if(n == null){
+        Errors(Error.INTINPUT, st)
+        return null
+    }
+    var list = mutableListOf<Pair<Float, Float>>()
+    for (i in 0 until n) {
+        var pair = getKeyValues(1)
+        if(pair == null){
+            return null
+        }
+        var x = pair.first.toFloatOrNull()
+        if(x == null){
+            Errors(Error.FLOATINPUT, st - 1)
+            return null
+        }
+        var y = pair.second[0]
+        list.add(Pair(x, y))
+    }
+    list.sortWith( compareBy({it.first}, {it.second}))
+    return Pair(n, list)
+}
+
+fun prepareClusteredHistogram() : Boolean{
     var nInput = lines[st++].toIntOrNull()
     var mInput = lines[st++].toIntOrNull()
     if(nInput == null || mInput == null){
-        Errors(Error.INTINPUT)
+        Errors(Error.INTINPUT, st - 1)
         return false
     }
     n = nInput
     m = mInput
     fields = lines[st++].split(' ')
     if(fields.size != m){
-        Errors(Error.MATCHSIZEFIELDS)
+        Errors(Error.MATCHSIZEFIELDS, st - 1)
         return false
     }
     for(i in 0 until n){
-        var pair = lines[st++].split(' ')
-        if(pair.isEmpty()){
-            Errors(Error.EMPTYINPUT)
+        var element = getKeyValues(m)
+        if(element == null){
             return false
         }
-        var product = pair[0]
-        var vec1 = pair.toMutableList()
-        vec1.removeFirst()
-        var vec = vec1.map {
-            if(it.toIntOrNull() == null){
-                Errors(Error.INTINPUT)
-                return false
-            }
-            it.toInt()
-        }
-        if (vec.size != m) {
-            Errors(Error.MATCHSIZEFIELDS)
-            return false
-        }
-        data.add(classData(product, vec.toMutableList()))
+        data.add(classData(element.first, element.second))
     }
     return true
 }
@@ -66,12 +98,12 @@ fun prepareClusteredHistohram() : Boolean{
 fun prepareGraph() : Boolean {
     fields = lines[st++].split(' ')
     if(fields.size != 2){
-        Errors(Error.TWOFIELDS)
+        Errors(Error.TWOFIELDS, st - 1)
         return false
     }
     var nInput = lines[st++].toIntOrNull()
     if(nInput == null){
-        Errors(Error.INTINPUT)
+        Errors(Error.INTINPUT, st - 1)
         return false
     }
     n = nInput
@@ -79,33 +111,15 @@ fun prepareGraph() : Boolean {
     for(i in 0 until n){
         var name = lines[st++]
         if(name.isEmpty()){
-            Errors(Error.EMPTYINPUT)
+            Errors(Error.EMPTYINPUT, st - 1)
             continue
         }
         dataGraph.names.add(name)
-        var mInput = lines[st++].toIntOrNull()
-        if(mInput == null){
-            Errors(Error.INTINPUT)
+        var mList = getPoints()
+        if(mList == null){
             return false
         }
-        m = mInput
-        var list = mutableListOf<Pair<Float, Float>>()
-        for (i in 0 until m) {
-            var pair = lines[st++].split(' ')
-            if(pair.size != 2){
-                Errors(Error.MATCHSIZEFIELDS)
-                return false
-            }
-            var x = pair[0].toFloatOrNull()
-            var y = pair[1].toFloatOrNull()
-            if(x == null || y === null){
-                Errors(Error.FLOATINPUT)
-                return false
-            }
-            list.add(Pair(x, y))
-        }
-        list.sortWith( compareBy({it.first}, {it.second}))
-        dataGraph.xyValues.add(list)
+        dataGraph.xyValues.add(mList.second)
     }
     return true
 }
@@ -113,25 +127,18 @@ fun prepareGraph() : Boolean {
 fun preparePieChart() : Boolean{
     var nInput = lines[st++].toIntOrNull()
     if(nInput == null){
-        Errors(Error.INTINPUT)
+        Errors(Error.INTINPUT, st - 1)
         return false
     }
     n = nInput
     data1.n = n
-    var list : MutableList <Pair<Int, String> > = mutableListOf()
+    var list : MutableList <Pair<Float, String> > = mutableListOf()
     for(i in 0 until n){
-        var str = lines[st++].split(' ')
-        if(str.size != 2){
-            Errors(Error.TWOFIELDS)
+        val nameValue = getKeyValues(1)
+        if(nameValue == null){
             return false
         }
-        var name = str[0]
-        var value = str[1].toIntOrNull() // exception !!!!!!!!!
-        if(value == null){
-            Errors(Error.INTINPUT)
-            return false
-        }
-        list.add(Pair(value, name))
+        list.add(Pair(nameValue.second[0], nameValue.first))
     }
     list.sortByDescending { it.first }
     for(v in list){
@@ -142,27 +149,14 @@ fun preparePieChart() : Boolean{
 }
 
 fun prepareDistributionGraph() : Boolean{
-    var nInput = lines[st++].toIntOrNull()
-    if(nInput == null){
-        Errors(Error.INTINPUT)
+    var nValues = getPoints()
+    if(nValues == null){
         return false
     }
-    n = nInput
-    dataDistributionGraph.n = n
-    for(i in 0 until n){
-        var str = lines[st++].split(' ')
-        if(str.size != 2){
-            Errors(Error.TWOFIELDS)
-            return false
-        }
-        var x = str[0].toFloatOrNull()
-        var y = str[1].toFloatOrNull() // exception !!!!!!!!!
-        if(x == null || y == null){
-            Errors(Error.FLOATINPUT)
-            return false
-        }
-        dataDistributionGraph.xValues.add(x)
-        dataDistributionGraph.yValues.add(y)
+    n = nValues.first
+    nValues.second.forEach {
+        dataDistributionGraph.xValues.add(it.first)
+        dataDistributionGraph.yValues.add(it.second)
     }
     return true
 }
