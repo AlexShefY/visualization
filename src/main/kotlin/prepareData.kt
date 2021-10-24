@@ -90,6 +90,10 @@ fun prepareClusteredHistogram() : Boolean{
         if(element == null){
             return false
         }
+        if(element.second.size != m){
+            Errors(Error.MATCHSIZEFIELDS, st - 1)
+            return false
+        }
         data.add(classData(element.first, element.second))
     }
     return true

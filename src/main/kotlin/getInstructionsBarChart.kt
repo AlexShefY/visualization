@@ -6,7 +6,7 @@ fun getInstructionsBarChart(paint : Paint) : MutableList<Instruction>{
     var sty = 100f
     var stx = 100f
     var endx = 500f
-    instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(0f, 0f, 1000f, 1000f), paints = arrayListOf(Paint().apply { color = greyColor } )))
+    instructions.add(paintAll())
     for(i in 0 until data1.n){
         instructions.add(Instruction(Type ="RectShader", coordinates = floatArrayOf(stx, sty, stx + (endx - stx) * data1.values[i] / maxx, 20f),
             paints = arrayListOf(arrayListPaints[i + 16], arrayListPaints[i])))
