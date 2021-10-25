@@ -2,14 +2,10 @@ import java.awt.Color
 import org.jetbrains.skija.*
 
 import kotlin.math.*
+var colorBlack = 0xff000000.toLong()
 
-fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
-    var instructions : MutableList <Instruction> = mutableListOf()
-    var maxx = dataDistributionGraph.xValues.maxOf { abs(it) }
-    var maxy = dataDistributionGraph.yValues.maxOf { abs(it) }
-    var delx = normal(maxx.toInt())
-    var dely = normal(maxx.toInt())
-    var numberPix = 600
+
+fun calcDist(numberPix : Int, delx : Int, dely : Int) : Array<Array<Double> > {
     var dist : Array<Array<Double> > = Array(numberPix) {Array(numberPix) {0.0} }
     n = dataDistributionGraph.n
     var g1 : Array<Double> = Array(n) {0.0}
@@ -22,7 +18,6 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
         }
         g1[x] = sqrt(g1[x] / (n))
     }
-    var maxd = 0.0
     for(i in 0 until numberPix){
         for(j in 0 until numberPix){
             var xcur = (i - 300f) * 1f / 30 * delx + 0.05f
@@ -31,11 +26,14 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
                 var m1 = dataDistributionGraph.xValues[x]
                 var m2 = dataDistributionGraph.yValues[x]
                 dist[i][j] = dist[i][j] + 1f / (sqrt(2 * PI) * g1[x]) * E.pow(-0.5f * (dist(m1, m2, xcur, ycur).pow(4) / (g1[x] * g1[x])))
-                maxd = max(maxd, dist[i][j])
             }
         }
     }
-    var colorBlack = 0xff000000.toLong()
+    return dist
+}
+
+fun paintSmallRects(instructions : MutableList<Instruction>, numberPix: Int, dist : Array<Array<Double>>){
+    var maxd = dist.maxOf{it.maxOf {it}}
     for(i in 0 until numberPix){
         for(j in 0 until numberPix){
             var xgraph = i * 1f + 10f
@@ -48,6 +46,9 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
             instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(xgraph, ygraph,1f, 1f), paints = arrayListOf(Paint().apply { color = colorCur.toInt() })))
         }
     }
+}
+
+fun getAxesDistributionGraph(instructions: MutableList<Instruction>, delx : Int, dely : Int){
     instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(310f, 10f, 310f, 610f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))
     instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(10f, 310f, 610f, 310f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))
     for(i in -10..10) {
@@ -58,5 +59,17 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
             instructions.add(Instruction(Type = "String", text = "${i * dely}", coordinates = floatArrayOf(310f + i * 30f, 320f)))
         }
     }
+}
+
+fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
+    var instructions : MutableList <Instruction> = mutableListOf()
+    var maxx = dataDistributionGraph.xValues.maxOf { abs(it) }
+    var maxy = dataDistributionGraph.yValues.maxOf { abs(it) }
+    var delx = normal(maxx.toInt())
+    var dely = normal(maxy.toInt())
+    var numberPix = 600
+    var dist = calcDist(numberPix, delx, dely)
+    paintSmallRects(instructions, numberPix, dist)
+    getAxesDistributionGraph(instructions, delx, dely)
     return instructions
 }
