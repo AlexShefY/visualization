@@ -5,16 +5,8 @@ fun getInstructionsTypeGraph(paint : Paint) : MutableList < Instruction > {
     var instructions : MutableList <Instruction > = mutableListOf()
     var maxx = dataGraph.xyValues.maxOf { it.maxOf { it.first } }
     var maxy = dataGraph.xyValues.maxOf { it.maxOf { it.second } }
-    var proportionx = ((maxx + 9) / 10).toInt()
-    var proportiony = ((maxy + 9) / 10).toInt()
-    if(proportionx == 0){
-        proportionx = 1
-    }
-    proportionx = normal(proportionx)
-    if(proportiony == 0){
-        proportiony = 1
-    }
-    proportiony = normal(proportiony)
+    var proportionx = normal((maxx + 9).toInt())
+    var proportiony = normal((maxy + 9).toInt())
     var lastx = 0f
     var lasty = 0f
     instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(0f, 0f, 1000f, 1000f), paints = arrayListOf(Paint().apply { color = greyColor } )))

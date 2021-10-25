@@ -7,8 +7,8 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
     var instructions : MutableList <Instruction> = mutableListOf()
     var maxx = dataDistributionGraph.xValues.maxOf { abs(it) }
     var maxy = dataDistributionGraph.yValues.maxOf { abs(it) }
-    var delx = normal((maxx / 10).toInt())
-    var dely = normal((maxy / 10).toInt())
+    var delx = normal(maxx.toInt())
+    var dely = normal(maxx.toInt())
     var numberPix = 600
     var dist : Array<Array<Double> > = Array(numberPix) {Array(numberPix) {0.0} }
     n = dataDistributionGraph.n
@@ -25,8 +25,8 @@ fun getInstructionDistributionGraph(paint : Paint) : MutableList<Instruction>{
     var maxd = 0.0
     for(i in 0 until numberPix){
         for(j in 0 until numberPix){
-            var xcur = (i - 300f) / 30 * delx + 0.05f
-            var ycur = (300f - j) / 30 * dely + 0.05f
+            var xcur = (i - 300f) * 1f / 30 * delx + 0.05f
+            var ycur = (300f - j) * 1f / 30 * dely + 0.05f
             for(x in 0 until n){
                 var m1 = dataDistributionGraph.xValues[x]
                 var m2 = dataDistributionGraph.yValues[x]

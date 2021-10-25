@@ -158,6 +158,7 @@ fun prepareDistributionGraph() : Boolean{
         return false
     }
     n = nValues.first
+    dataDistributionGraph.n = n
     nValues.second.forEach {
         dataDistributionGraph.xValues.add(it.first)
         dataDistributionGraph.yValues.add(it.second)
