@@ -18,11 +18,26 @@ fun paintArcs(instructions: MutableList<Instruction>, sum : Float,  pointx : Flo
     }
 }
 
+var leftx = 100f
+var lefty = 100f
+var rightx = 600f
+var righty = 100f
+
+fun paintOneSector(instructions: MutableList<Instruction>, angleTo : Float, centralX : Double, centralY : Double, percent : Int, i : Int){
+    instructions.add(Instruction(Type = "String", text = "$percent%", coordinates = floatArrayOf(centralX.toFloat(), centralY.toFloat())))
+    if(angleTo < -90f || angleTo > 90f){
+        instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(leftx, lefty)))
+        instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(leftx - 10f, lefty - 10f, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
+        lefty += 40f
+    }
+    else{
+        instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(rightx, righty)))
+        instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(rightx - 10f, righty - 10f, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
+        righty += 40f
+    }
+}
+
 fun paintCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: Float, pointy: Float, startradius: Float){
-    var leftx = 100f
-    var lefty = 100f
-    var rightx = 600f
-    var righty = 100f
     var i = 0
     var startAngle = -90f
     for(v in data1.values){
@@ -30,17 +45,7 @@ fun paintCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: F
         var centralX = pointx + startradius * cos(angleTo / 180f * PI) / 2
         var centralY = pointy - startradius * sin(angleTo / 180f * PI) / 2
         var percent = (v * 100 / sum).toInt()
-        instructions.add(Instruction(Type = "String", text = "$percent%", coordinates = floatArrayOf(centralX.toFloat(), centralY.toFloat())))
-        if(angleTo < -90f || angleTo > 90f){
-            instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(leftx, lefty)))
-            instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(leftx - 10f, lefty - 10f, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
-            lefty += 40f
-        }
-        else{
-            instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(rightx, righty)))
-            instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(rightx - 10f, righty - 10f, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
-            righty += 40f
-        }
+        paintOneSector(instructions, angleTo, centralX, centralY, percent, i)
         startAngle += 360f * v / sum
         i++
     }
