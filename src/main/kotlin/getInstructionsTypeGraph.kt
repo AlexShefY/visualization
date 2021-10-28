@@ -20,6 +20,8 @@ fun paintLines(instructions : MutableList<Instruction>, proportionx : Int, propo
 
 fun printTags(instructions: MutableList<Instruction>, proportionx : Int, proportiony : Int, paint: Paint)
 {
+    instructions.add(Instruction(Type = "String", text = fields[0], coordinates = floatArrayOf(100f + 11 * 40f, 500f + 15f)))
+    instructions.add(Instruction(Type = "String", text = fields[1], coordinates = floatArrayOf(100f - 10f - 7f * fields[0].length, 500f - 11 * 40f)))
     for(j in 1..10){
         instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(100f + j * 40f, 500f, 100f + j * 40f, 505f), paints = arrayListOf(paint)))
         instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(100f, 500f - j * 40, 100f - 5f, 500f - j *40f), paints = arrayListOf(paint)))
