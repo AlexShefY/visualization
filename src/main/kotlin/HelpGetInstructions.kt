@@ -36,3 +36,16 @@ fun printMarksSimpleVersion(instructions: MutableList<Instruction>, x0 : Float, 
         instructions.add(Instruction(Type = "String", text = "${proportion * j}", coordinates = floatArrayOf(x0 - dy - 5f * "${proportion * j}".length, y0 - dy * j)))
     }
 }
+
+/*
+ * draw a description where each category is mapped to a color
+ * of the line on the graph
+ */
+fun printDescription(instructions: MutableList<Instruction>){
+    var sty = 540f
+    for(i in 0 until dataGraph.n){
+        instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(100f, sty, 10f, 10f), paints = arrayListOf(arrayListPaints[i])))
+        instructions.add(Instruction(Type = "String", text = dataGraph.names[i], coordinates = floatArrayOf(120f, sty + 10f)))
+        sty += 20f
+    }
+}
