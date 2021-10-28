@@ -118,7 +118,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
     /*
      * print the histogram
      */
-    var mapGetInstruction = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: getInstructionsType1,
+    var mapGetInstruction = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: getInstructionsGraph,
     typesOfInput.GRAPH to :: getInstructionsTypeGraph, typesOfInput.STACKEDHISTOHRAM to :: getInstructionsStackedHistogram,
     typesOfInput.PIECHART to :: getInstructionsPieChart, typesOfInput.BARCHART to :: getInstructionsBarChart,
     typesOfInput.DISTRIBUTIONGRAPH to :: getInstructionDistributionGraph)

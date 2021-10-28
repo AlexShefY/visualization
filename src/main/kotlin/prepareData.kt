@@ -47,6 +47,17 @@ fun getKeyValues(m : Int) : Pair<String, MutableList<Float>>?{
     return Pair(key, values)
 }
 
+fun getPairFloat() : Pair<Float, Float >?{
+    var keyValues = getKeyValues(1) ?: return null
+    var x = keyValues.first.toFloatOrNull()
+    var y = keyValues.second[0]
+    if(x == null){
+        Errors(Error.FLOATINPUT, st - 1)
+        return null
+    }
+    return Pair(x, y)
+}
+
 fun getPoints() : Pair<Int, MutableList<Pair<Float, Float>>>?{
     var n = lines[st++].toIntOrNull()
     if(n == null){
@@ -55,14 +66,8 @@ fun getPoints() : Pair<Int, MutableList<Pair<Float, Float>>>?{
     }
     var list = mutableListOf<Pair<Float, Float>>()
     for (i in 0 until n) {
-        var pair = getKeyValues(1) ?: return null
-        var x = pair.first.toFloatOrNull()
-        if(x == null){
-            Errors(Error.FLOATINPUT, st - 1)
-            return null
-        }
-        var y = pair.second[0]
-        list.add(Pair(x, y))
+        var pair = getPairFloat() ?: return null
+        list.add(pair)
     }
     list.sortWith( compareBy({it.first}, {it.second}))
     return Pair(n, list)
@@ -84,10 +89,6 @@ fun prepareClusteredHistogram() : Boolean{
     }
     for(i in 0 until n){
         var element = getKeyValues(m) ?: return false
-        if(element.second.size != m){
-            Errors(Error.MATCHSIZEFIELDS, st - 1)
-            return false
-        }
         data.add(classData(element.first, element.second))
     }
     return true

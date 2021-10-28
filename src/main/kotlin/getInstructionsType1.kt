@@ -24,7 +24,7 @@ fun addColumnsClustered(instructions : MutableList<Instruction>, x0 : Float, y0 
     }
 }
 
-fun getInstructionsType1(paint : Paint) : MutableList<Instruction>{
+fun getInstructionsGraph(paint : Paint) : MutableList<Instruction>{
     var instructions : MutableList <Instruction> = mutableListOf()
     var proportion = normal(data.maxOf { oneData -> oneData.values.maxOf {it} }.toInt())
     var allsize = data.sumOf { max(it.values.size * 20f + 40f, 6.5f * it.key.length).toDouble() }.toFloat()
