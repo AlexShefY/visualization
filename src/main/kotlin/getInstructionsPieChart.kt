@@ -1,7 +1,13 @@
 import org.jetbrains.skija.Paint
 import kotlin.math.*
 
+/*
+ * In this file we form instructions for displaying clustered histogram
+ */
 
+/*
+ * Draw sector for one
+ */
 fun paintArcs(instructions: MutableList<Instruction>, sum : Float,  pointx : Float, pointy : Float, startradius : Float, endradius : Float){
     var startAngle = -90f
     for((i, v) in data1.values.withIndex()){
@@ -21,7 +27,11 @@ var lefty = 100f
 var rightx = 600f
 var righty = 100f
 
-fun paintOneSector(instructions: MutableList<Instruction>, angleTo : Float, centralX : Double, centralY : Double, percent : Int, i : Int){
+/*
+ * Print percentage of the total for the current data.
+ * Print description key of data and associated color
+ */
+fun printOneSector(instructions: MutableList<Instruction>, angleTo : Float, centralX : Double, centralY : Double, percent : Int, i : Int){
     instructions.add(Instruction(Type = "String", text = "$percent%", coordinates = floatArrayOf(centralX.toFloat(), centralY.toFloat())))
     if(angleTo < -90f || angleTo > 90f){
         instructions.add(Instruction(Type = "String", text = data1.keys[i], coordinates = floatArrayOf(leftx, lefty)))
@@ -35,7 +45,11 @@ fun paintOneSector(instructions: MutableList<Instruction>, angleTo : Float, cent
     }
 }
 
-fun paintCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: Float, pointy: Float, startradius: Float){
+/*
+ * Print description and percentage for all histogram
+ */
+
+fun printCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: Float, pointy: Float, startradius: Float){
     leftx = 100f
     lefty = 100f
     rightx = 600f
@@ -46,11 +60,14 @@ fun paintCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: F
         var centralX = pointx + startradius * cos(angleTo / 180f * PI) / 2
         var centralY = pointy - startradius * sin(angleTo / 180f * PI) / 2
         var percent = (v * 100 / sum).toInt()
-        paintOneSector(instructions, angleTo, centralX, centralY, percent, i)
+        printOneSector(instructions, angleTo, centralX, centralY, percent, i)
         startAngle += 360f * v / sum
     }
 }
 
+/*
+ * Draw the center with the printed value of the total sum of the values for the data
+ */
 fun paintCenter(instructions: MutableList<Instruction>, sum : Float, pointx : Float, pointy: Float){
     instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - 50f, pointy - 50f, pointx + 50f, pointy + 50f, -90f, 360f),
         paints = arrayListOf(Paint().apply { color = greyColor } )))
@@ -67,7 +84,7 @@ fun getInstructionsPieChart(paint : Paint) : MutableList<Instruction > {
     var pointy = 400f
     instructions.add(paintAll())
     paintArcs(instructions, sum, pointx, pointy, startradius, endradius)
-    paintCaptions(instructions, sum, pointx, pointy, startradius)
+    printCaptions(instructions, sum, pointx, pointy, startradius)
     paintCenter(instructions, sum, pointx, pointy)
     return instructions
 }

@@ -1,5 +1,8 @@
 import org.jetbrains.skija.Paint
 
+/*
+ * in this file we form instructions for displaying the bar chart
+ */
 fun getInstructionsBarChart(paint : Paint) : MutableList<Instruction>{
     var instructions : MutableList <Instruction> = mutableListOf()
     var maxx = data1.values[0]

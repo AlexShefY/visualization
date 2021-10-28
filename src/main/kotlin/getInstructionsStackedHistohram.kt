@@ -4,6 +4,13 @@ import org.jetbrains.skija.Paint
 var greyColor = 0xffd3dbe4.toInt()
 var whiteColor = 0xffffffff.toInt()
 
+/*
+ * In this file we form instructions for displaying stacked histogram
+ */
+
+/*
+ * draw one column
+ */
 fun addOneColumnStacked(instructions: MutableList<Instruction>, i : Int, proportion : Int, stx : Float, sty : Float){
     var j = 0
     var curList = (data[i].values zip Array(data[i].values.size) { j++ }).toMutableList()
@@ -16,6 +23,10 @@ fun addOneColumnStacked(instructions: MutableList<Instruction>, i : Int, proport
     }
 }
 
+
+/*
+ * draw columns one by one
+ */
 fun addColumnsStacked(instructions: MutableList<Instruction>, x0 : Float, y0 : Float, dy : Float, proportion : Int){
     var stx = x0
     for(i in data.indices) {
@@ -26,6 +37,10 @@ fun addColumnsStacked(instructions: MutableList<Instruction>, x0 : Float, y0 : F
     }
 }
 
+
+/*
+ * draw auxiliary lines
+ */
 fun printHelpTagLines(instructions: MutableList<Instruction>, x0 : Float, y0 : Float, dx : Float, dy : Float, paint : Paint){
     for(j in 1..10){
         instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(x0, y0 + dy - j * 40f, x0 + dx, y0 + dy - j * 40f), paints = arrayListOf(paint)))
@@ -43,7 +58,7 @@ fun getInstructionsStackedHistogram(paint : Paint) : MutableList<Instruction>{
     instructions.add(paintAll())
     printDescription(instructions, 30f, 30f, 20f)
     lineInstructions(instructions, paint, x0, y0 + dy, x0, y0, x0 + dx, y0 + dy)
-    printTags(instructions, x0, y0 + dy, 40f, proportion, paint)
+    printMarksSimpleVersion(instructions, x0, y0 + dy, 40f, proportion, paint)
     printHelpTagLines(instructions, x0, y0, dx, dy, paint)
     addColumnsStacked(instructions, x0, y0, dy, proportion)
     return instructions

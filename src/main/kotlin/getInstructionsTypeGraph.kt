@@ -1,6 +1,14 @@
 import org.jetbrains.skija.Paint
 import kotlin.math.*
 
+
+/*
+ * in this file we form instructions for displaying the graphic
+ */
+
+/*
+ * draw lines of graphics
+ */
 fun paintLines(instructions : MutableList<Instruction>, proportionx : Int, proportiony : Int, paint: Paint){
     for(i in 0 until dataGraph.n){
         for(j in 1 until dataGraph.xyValues[i].size) {
@@ -17,8 +25,10 @@ fun paintLines(instructions : MutableList<Instruction>, proportionx : Int, propo
         }
     }
 }
-
-fun printTags(instructions: MutableList<Instruction>, proportionx : Int, proportiony : Int, paint: Paint)
+/*
+ * print marks on graphic
+ */
+fun printMarks(instructions: MutableList<Instruction>, proportionx : Int, proportiony : Int, paint: Paint)
 {
     instructions.add(Instruction(Type = "String", text = fields[0], coordinates = floatArrayOf(100f + 11 * 40f, 500f + 15f)))
     instructions.add(Instruction(Type = "String", text = fields[1], coordinates = floatArrayOf(100f - 10f - 7f * fields[0].length, 500f - 11 * 40f)))
@@ -30,11 +40,18 @@ fun printTags(instructions: MutableList<Instruction>, proportionx : Int, proport
     }
 }
 
+/*
+ * draw axes
+ */
 fun getAxesSimpleGraph(instructions: MutableList<Instruction>, paint: Paint){
     instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(100f, 500f, 100f, 60f), paints = arrayListOf(paint)))
     instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(100f, 500f, 540f, 500f), paints = arrayListOf(paint)))
 }
 
+/*
+ * draw a description where each category is mapped to a color
+ * of the line on the graph
+ */
 fun printDescription(instructions: MutableList<Instruction>){
     var sty = 540f
     for(i in 0 until dataGraph.n){
@@ -51,7 +68,7 @@ fun getInstructionsTypeGraph(paint : Paint) : MutableList < Instruction > {
     var proportionx = normal((maxx + 9).toInt())
     var proportiony = normal((maxy + 9).toInt())
     instructions.add(paintAll())
-    printTags(instructions, proportionx, proportiony, paint)
+    printMarks(instructions, proportionx, proportiony, paint)
     getAxesSimpleGraph(instructions, paint)
     printDescription(instructions)
     paintLines(instructions, proportionx, proportiony, paint)

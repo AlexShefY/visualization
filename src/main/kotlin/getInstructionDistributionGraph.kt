@@ -4,7 +4,14 @@ import org.jetbrains.skija.*
 import kotlin.math.*
 var colorBlack = 0xff000000.toLong()
 
+/*
+ * in this file we form instructions for displaying the distribution graphic
+ */
 
+/*
+ * In this function we calculate auxiliary array for "pixels" that will
+ * help us to color each "pixel" in desired color
+ */
 fun calcDist(numberPix : Int, delx : Int, dely : Int) : Array<Array<Double> > {
     var dist : Array<Array<Double> > = Array(numberPix) {Array(numberPix) {0.0} }
     n = dataDistributionGraph.n
@@ -32,6 +39,9 @@ fun calcDist(numberPix : Int, delx : Int, dely : Int) : Array<Array<Double> > {
     return dist
 }
 
+/*
+ * Form instructions that paint "pixels"
+ */
 fun paintSmallRects(instructions : MutableList<Instruction>, numberPix: Int, dist : Array<Array<Double>>){
     var maxd = dist.maxOf{it.maxOf {it}}
     for(i in 0 until numberPix){
@@ -48,6 +58,9 @@ fun paintSmallRects(instructions : MutableList<Instruction>, numberPix: Int, dis
     }
 }
 
+/*
+ * draw axes
+ */
 fun getAxesDistributionGraph(instructions: MutableList<Instruction>, delx : Int, dely : Int){
     instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(310f, 10f, 310f, 610f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))
     instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(10f, 310f, 610f, 310f), paints = arrayListOf(Paint().apply { color = colorBlack.toInt() } )))

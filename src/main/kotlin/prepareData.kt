@@ -25,6 +25,9 @@ fun getTypeInput() : typesOfInput? {
     }
 }
 
+/*
+ * get from input key and desired number of values
+ */
 fun getKeyValues(m : Int) : Pair<String, MutableList<Float>>?{
     var line = lines[st++].split(' ').toMutableList()
     if(line.isEmpty()){
@@ -47,6 +50,9 @@ fun getKeyValues(m : Int) : Pair<String, MutableList<Float>>?{
     return Pair(key, values)
 }
 
+/*
+ * get from input pair floats
+ */
 fun getPairFloat() : Pair<Float, Float >?{
     var keyValues = getKeyValues(1) ?: return null
     var x = keyValues.first.toFloatOrNull()
@@ -58,6 +64,9 @@ fun getPairFloat() : Pair<Float, Float >?{
     return Pair(x, y)
 }
 
+/*
+ * get point on graphic from input
+ */
 fun getPoints() : Pair<Int, MutableList<Pair<Float, Float>>>?{
     var n = lines[st++].toIntOrNull()
     if(n == null){
@@ -72,6 +81,10 @@ fun getPoints() : Pair<Int, MutableList<Pair<Float, Float>>>?{
     list.sortWith( compareBy({it.first}, {it.second}))
     return Pair(n, list)
 }
+
+/*
+ * prepare data for clustered histogram or stacked histogram
+ */
 
 fun prepareClusteredHistogram() : Boolean{
     var nInput = lines[st++].toIntOrNull()
@@ -93,6 +106,10 @@ fun prepareClusteredHistogram() : Boolean{
     }
     return true
 }
+
+/*
+ * prepare data for graph
+ */
 
 fun prepareGraph() : Boolean {
     fields = lines[st++].split(' ')
@@ -120,6 +137,9 @@ fun prepareGraph() : Boolean {
     return true
 }
 
+/*
+ * prepare data for pie chart or bar chart
+ */
 fun preparePieChart() : Boolean{
     var nInput = lines[st++].toIntOrNull()
     if(nInput == null){
@@ -141,6 +161,9 @@ fun preparePieChart() : Boolean{
     return true
 }
 
+/*
+ * prepare data for distribution graph
+ */
 fun prepareDistributionGraph() : Boolean{
     var nValues = getPoints() ?: return false
     n = nValues.first
