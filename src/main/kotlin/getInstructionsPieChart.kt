@@ -36,6 +36,10 @@ fun paintOneSector(instructions: MutableList<Instruction>, angleTo : Float, cent
 }
 
 fun paintCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: Float, pointy: Float, startradius: Float){
+    leftx = 100f
+    lefty = 100f
+    rightx = 600f
+    righty = 100f
     var startAngle = -90f
     for((i, v) in data1.values.withIndex()){
         var angleTo = -startAngle - 180f * v / sum
