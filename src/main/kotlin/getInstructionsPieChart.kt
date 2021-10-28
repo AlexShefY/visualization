@@ -4,8 +4,7 @@ import kotlin.math.*
 
 fun paintArcs(instructions: MutableList<Instruction>, sum : Float,  pointx : Float, pointy : Float, startradius : Float, endradius : Float){
     var startAngle = -90f
-    var i = 0
-    for(v in data1.values){
+    for((i, v) in data1.values.withIndex()){
         var radius = startradius + (endradius - startradius) * v / sum
         instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - radius, pointy - radius, pointx + radius, pointy + radius, startAngle, 360f * v / sum),
             paints = arrayListOf(arrayListPaints[i])))
@@ -14,7 +13,6 @@ fun paintArcs(instructions: MutableList<Instruction>, sum : Float,  pointx : Flo
         instructions.add(Instruction(Type = "Arc", coordinates = floatArrayOf(pointx - startradius, pointy - startradius, pointx + startradius, pointy + startradius, startAngle, 360f * v / sum),
             paints = arrayListOf(arrayListPaints[i + 8])))
         startAngle += 360f * v / sum
-        i++
     }
 }
 
@@ -38,16 +36,14 @@ fun paintOneSector(instructions: MutableList<Instruction>, angleTo : Float, cent
 }
 
 fun paintCaptions(instructions: MutableList<Instruction>, sum : Float, pointx: Float, pointy: Float, startradius: Float){
-    var i = 0
     var startAngle = -90f
-    for(v in data1.values){
+    for((i, v) in data1.values.withIndex()){
         var angleTo = -startAngle - 180f * v / sum
         var centralX = pointx + startradius * cos(angleTo / 180f * PI) / 2
         var centralY = pointy - startradius * sin(angleTo / 180f * PI) / 2
         var percent = (v * 100 / sum).toInt()
         paintOneSector(instructions, angleTo, centralX, centralY, percent, i)
         startAngle += 360f * v / sum
-        i++
     }
 }
 

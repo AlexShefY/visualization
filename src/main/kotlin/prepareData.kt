@@ -55,10 +55,7 @@ fun getPoints() : Pair<Int, MutableList<Pair<Float, Float>>>?{
     }
     var list = mutableListOf<Pair<Float, Float>>()
     for (i in 0 until n) {
-        var pair = getKeyValues(1)
-        if(pair == null){
-            return null
-        }
+        var pair = getKeyValues(1) ?: return null
         var x = pair.first.toFloatOrNull()
         if(x == null){
             Errors(Error.FLOATINPUT, st - 1)
@@ -86,10 +83,7 @@ fun prepareClusteredHistogram() : Boolean{
         return false
     }
     for(i in 0 until n){
-        var element = getKeyValues(m)
-        if(element == null){
-            return false
-        }
+        var element = getKeyValues(m) ?: return false
         if(element.second.size != m){
             Errors(Error.MATCHSIZEFIELDS, st - 1)
             return false
@@ -119,10 +113,7 @@ fun prepareGraph() : Boolean {
             continue
         }
         dataGraph.names.add(name)
-        var mList = getPoints()
-        if(mList == null){
-            return false
-        }
+        var mList = getPoints() ?: return false
         dataGraph.xyValues.add(mList.second)
     }
     return true
@@ -138,10 +129,7 @@ fun preparePieChart() : Boolean{
     data1.n = n
     var list : MutableList <Pair<Float, String> > = mutableListOf()
     for(i in 0 until n){
-        val nameValue = getKeyValues(1)
-        if(nameValue == null){
-            return false
-        }
+        val nameValue = getKeyValues(1) ?: return false
         list.add(Pair(nameValue.second[0], nameValue.first))
     }
     list.sortByDescending { it.first }
@@ -153,10 +141,7 @@ fun preparePieChart() : Boolean{
 }
 
 fun prepareDistributionGraph() : Boolean{
-    var nValues = getPoints()
-    if(nValues == null){
-        return false
-    }
+    var nValues = getPoints() ?: return false
     n = nValues.first
     dataDistributionGraph.n = n
     nValues.second.forEach {

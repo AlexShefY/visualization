@@ -32,7 +32,7 @@ fun printHelpTagLines(instructions: MutableList<Instruction>, x0 : Float, y0 : F
     }
 }
 
-fun getInstructionsStackedHistohram(paint : Paint) : MutableList<Instruction>{
+fun getInstructionsStackedHistogram(paint : Paint) : MutableList<Instruction>{
     var instructions : MutableList<Instruction> = mutableListOf()
     var maxsum = data.maxOf { it.values.sum() }
     var proportion = normal(maxsum.toInt())

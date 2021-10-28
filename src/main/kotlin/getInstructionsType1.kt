@@ -8,7 +8,7 @@ fun addOneKeyColumnsClustered(instructions: MutableList<Instruction>, i : Int, p
     instructions.add(Instruction(Type = "String", text = data[i].key, coordinates = floatArrayOf(x0, 320f + y0)))
     var j = 0
     for(value in data[i].values){
-        var dy = value.toFloat() / proportion
+        var dy = value / proportion
         dy *= 20f
         instructions.add(Instruction(Type = "Line", coordinates = floatArrayOf(x0 + 20f * j, 300f + y0, x0 + 20f * (j + 1), 300f + y0), paints = arrayListOf(arrayListPaints[j])))
         instructions.add(Instruction(Type = "Rect", coordinates = floatArrayOf(x0 + 20f * j, 300f + y0 - dy, 20f, dy), paints = arrayListOf(arrayListPaints[j])))
@@ -26,7 +26,7 @@ fun addColumnsClustered(instructions : MutableList<Instruction>, x0 : Float, y0 
 
 fun getInstructionsType1(paint : Paint) : MutableList<Instruction>{
     var instructions : MutableList <Instruction> = mutableListOf()
-    var proportion = normal(data.maxOf { it.values.maxOf {it} }.toInt())
+    var proportion = normal(data.maxOf { oneData -> oneData.values.maxOf {it} }.toInt())
     var allsize = data.sumOf { max(it.values.size * 20f + 40f, 6.5f * it.key.length).toDouble() }.toFloat()
     var y0 = fields.size * 20f + 140
     var x0 = 140f

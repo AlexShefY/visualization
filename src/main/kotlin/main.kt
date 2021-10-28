@@ -97,13 +97,13 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
     /*
      * Output to file
      */
-    fun outFile(instrucions: MutableList<Instruction>, canvas: Canvas){
-        outWindow(instrucions, canvas)
+    fun outFile(instructions: MutableList<Instruction>, canvas: Canvas){
+        outWindow(instructions, canvas)
         val image = surface.makeImageSnapshot()
         val pngData = image.encodeToData(EncodedImageFormat.JPEG)
         val pngBytes = pngData!!.toByteBuffer()
         try {
-            val path: Path = Path(fileName)
+            val path = Path(fileName)
             val channel: ByteChannel = newByteChannel(
                 path,
                 StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE
@@ -119,7 +119,7 @@ class Renderer(val layer: SkiaLayer): SkiaRenderer {
      * print the histogram
      */
     var mapGetInstruction = mapOf(typesOfInput.CLUSTEREDHISTOHRAM to :: getInstructionsType1,
-    typesOfInput.GRAPH to :: getInstructionsTypeGraph, typesOfInput.STACKEDHISTOHRAM to :: getInstructionsStackedHistohram,
+    typesOfInput.GRAPH to :: getInstructionsTypeGraph, typesOfInput.STACKEDHISTOHRAM to :: getInstructionsStackedHistogram,
     typesOfInput.PIECHART to :: getInstructionsPieChart, typesOfInput.BARCHART to :: getInstructionsBarChart,
     typesOfInput.DISTRIBUTIONGRAPH to :: getInstructionDistributionGraph)
 
