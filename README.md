@@ -1,6 +1,8 @@
 # Курс основ программирования на МКН СПбГУ
 ## Project 3: visualization of data
 
+[How it works](description.md)
+
 The program accept name of file with data as input.
 
 To run the program firstly you should run it from the command line
